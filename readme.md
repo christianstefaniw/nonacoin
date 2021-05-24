@@ -1,5 +1,5 @@
 <div align="center">
-    <h1>🪙 The Nonacoin Cryptocurrency</h1>
+    <h1>🪙 The Nonacoin Cryptocurrency 🪙</h1>
 </div>
 
 <div align="center">

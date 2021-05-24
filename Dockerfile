@@ -9,6 +9,6 @@ RUN go mod download
 
 COPY . .
 
-RUN go build -o ./out/nonacoin src/cmd/nonacoin/main.go
+RUN go build -o ./bin/nonacoin src/cmd/nonacoin/main.go
 
-CMD ["./out/nonacoin"]
+CMD ["./bin/nonacoin"]
