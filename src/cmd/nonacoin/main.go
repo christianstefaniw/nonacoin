@@ -1,7 +1,11 @@
 package main
 
-import "fmt"
+import (
+	"nonacoin/src/helpers"
+	"nonacoin/src/net"
+)
 
 func main() {
-	fmt.Println("ok")
+	helpers.LoadDotEnv()
+	net.ServeHTTP()
 }
