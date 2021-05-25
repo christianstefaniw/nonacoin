@@ -7,5 +7,5 @@ import (
 )
 
 func GenRoutes(r *cgr.Router, subdir string) {
-	r.Route(helpers.RoutePath(subdir, "test")).Method("GET").Handler(helloWorld).Insert()
+	r.Route(helpers.RoutePath(subdir, "test")).Method("GET").Handler(test).Insert()
 }
