@@ -11,4 +11,6 @@ COPY . .
 
 RUN go build -o ./bin/nonacoin src/cmd/nonacoin/main.go
 
+EXPOSE 8080
+
 CMD ["./bin/nonacoin"]
