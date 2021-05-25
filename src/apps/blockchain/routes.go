@@ -1,4 +1,4 @@
-package blockchainapi
+package blockchain
 
 import (
 	"nonacoin/src/helpers"

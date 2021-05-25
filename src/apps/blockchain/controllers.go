@@ -1,4 +1,4 @@
-package blockchainapi
+package blockchain
 
 import (
 	"fmt"
@@ -6,5 +6,6 @@ import (
 )
 
 func helloWorld(w http.ResponseWriter, r *http.Request) {
-	fmt.Fprint(w, "hello world")
+	b := createBlock()
+	fmt.Fprintf(w, "%x", b.hash)
 }
