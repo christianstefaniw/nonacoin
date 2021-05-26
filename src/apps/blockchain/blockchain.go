@@ -1,7 +1,6 @@
 package blockchain
 
 import (
-	"crypto/ed25519"
 	"crypto/sha256"
 	"errors"
 	"fmt"
@@ -131,12 +130,12 @@ func (bc *blockchain) getBalanceOfWallet(walletAddress PublicKey) float64 {
 	return balance
 }
 
-func (bc *blockchain) getAllTransactionsForWallet(walletAddress string) []*transaction {
+func (bc *blockchain) getAllTransactionsForWallet(walletAddress PublicKey) []*transaction {
 	transactions := make([]*transaction, 0)
 
 	for _, block := range bc.chain {
 		for _, trans := range block.transactions {
-			if trans.toAddress.toString() == walletAddress || trans.fromAddress.toString() == walletAddress {
+			if trans.toAddress.toString() == walletAddress.toString() || trans.fromAddress.toString() == walletAddress.toString() {
 				transactions = append(transactions, trans)
 			}
 		}
@@ -248,7 +247,7 @@ func (t *transaction) sign(privateKey PrivateKey, walletAddress PublicKey) error
 		return errors.New("cannot sign transaction for other wallet")
 	}
 
-	signature := ed25519.Sign(ed25519.PrivateKey(privateKey), t.hash)
+	signature := privateKey.sign(t.hash)
 	t.signature = signature
 
 	return nil
@@ -267,5 +266,5 @@ func (t *transaction) isValid() bool {
 		return false
 	}
 
-	return ed25519.Verify(ed25519.PublicKey(t.fromAddress), t.calculateHash(), t.signature)
+	return t.fromAddress.verify(t.calculateHash(), t.signature)
 }

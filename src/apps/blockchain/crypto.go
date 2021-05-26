@@ -12,8 +12,16 @@ func (pubKey PublicKey) toString() string {
 	return string(pubKey)
 }
 
+func (pubKey PublicKey) verify(hash, sig []byte) bool {
+	return ed25519.Verify(ed25519.PublicKey(pubKey), hash, sig)
+}
+
 func (privKey PrivateKey) toString() string {
 	return string(privKey)
+}
+
+func (privKey PrivateKey) sign(data []byte) []byte {
+	return ed25519.Sign(ed25519.PrivateKey(privKey), data)
 }
 
 func genKeys() (PublicKey, PrivateKey, error) {

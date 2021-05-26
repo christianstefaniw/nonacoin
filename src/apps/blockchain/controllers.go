@@ -14,7 +14,6 @@ func test(w http.ResponseWriter, r *http.Request) {
 
 	bc := createBlockchain()
 	t := createTransaction(nil, myWalletAddress, 9000)
-	//t2 := createTransaction(myWalletAddress, otherAddress, privateKey, 245)
 	valid := bc.appendTransactions(t)
 	if !valid {
 		fmt.Println("not valid 1")
@@ -31,5 +30,6 @@ func test(w http.ResponseWriter, r *http.Request) {
 
 	fmt.Fprint(w, bc)
 	fmt.Fprintf(w, "\n\nchain valid: %t\n", bc.isChainValid())
-	fmt.Fprintf(w, "my banace: %f", bc.getBalanceOfWallet(myWalletAddress))
+	fmt.Fprintf(w, "my banace: %f\n\n\n", bc.getBalanceOfWallet(myWalletAddress))
+	fmt.Fprintf(w, "transactions for %x:\n%s", myWalletAddress.toString(), bc.getAllTransactionsForWallet(myWalletAddress))
 }
