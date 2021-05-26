@@ -1,56 +1,22 @@
 package blockchain
 
 import (
+	"crypto/ed25519"
 	"crypto/rand"
-	"crypto/rsa"
-	"crypto/x509"
-	"encoding/pem"
-	"strings"
 )
 
-func genPrivateKey() (*rsa.PrivateKey, error) {
-	return rsa.GenerateKey(rand.Reader, 2024)
+type PublicKey ed25519.PublicKey
+type PrivateKey ed25519.PrivateKey
+
+func (pubKey PublicKey) toString() string {
+	return string(pubKey)
 }
 
-func genPrivatePem(privateKey *rsa.PrivateKey) string {
-	var privatePem strings.Builder
-
-	privateKeyBytes := x509.MarshalPKCS1PrivateKey(privateKey)
-	privateKeyBlock := &pem.Block{
-		Type:  "RSA PRIVATE KEY",
-		Bytes: privateKeyBytes,
-	}
-
-	pem.Encode(&privatePem, privateKeyBlock)
-
-	return privatePem.String()
+func (privKey PrivateKey) toString() string {
+	return string(privKey)
 }
 
-func genPublicPem(publicKey *rsa.PublicKey) (string, error) {
-	var publicPem strings.Builder
-
-	publicKeyBytes, err := x509.MarshalPKIXPublicKey(publicKey)
-	if err != nil {
-		return "", err
-	}
-	publicKeyBlock := &pem.Block{
-		Type:  "PUBLIC KEY",
-		Bytes: publicKeyBytes,
-	}
-
-	pem.Encode(&publicPem, publicKeyBlock)
-
-	return publicPem.String(), nil
-}
-
-// pubKeyFromPem turns a pub formatted key and parses it into a rsa.PublicKey type
-func pubKeyFromPem(pubKey string) *rsa.PublicKey {
-	pemBlock, _ := pem.Decode([]byte(pubKey))
-
-	parsedKey, err := x509.ParsePKIXPublicKey(pemBlock.Bytes)
-	if err != nil {
-		return nil
-	}
-
-	return parsedKey.(*rsa.PublicKey)
+func genKeys() (PublicKey, PrivateKey, error) {
+	pubKey, privKey, err := ed25519.GenerateKey(rand.Reader)
+	return PublicKey(pubKey), PrivateKey(privKey), err
 }

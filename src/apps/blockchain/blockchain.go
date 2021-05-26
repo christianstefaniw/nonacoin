@@ -1,9 +1,7 @@
 package blockchain
 
 import (
-	"crypto"
-	"crypto/rand"
-	"crypto/rsa"
+	"crypto/ed25519"
 	"crypto/sha256"
 	"errors"
 	"fmt"
@@ -13,12 +11,12 @@ import (
 )
 
 type transaction struct {
-	toAddress   string
-	fromAddress string
+	toAddress   PublicKey
+	fromAddress PublicKey
 	time        time.Time
-	hash        string
+	hash        []byte
 	amount      float64
-	signature   string
+	signature   []byte
 }
 
 type block struct {
@@ -68,6 +66,9 @@ func (bc *blockchain) minePendingTransactions() {
 // append transactions to the blockchain's pending transactions
 func (bc *blockchain) appendTransactions(transactions ...*transaction) bool {
 	for _, trans := range transactions {
+		if trans.fromAddress != nil && bc.getBalanceOfWallet(trans.fromAddress) < trans.amount {
+			return false
+		}
 
 		if !trans.isValid() {
 			return false
@@ -114,14 +115,14 @@ func (bc *blockchain) isChainValid() bool {
 	return true
 }
 
-func (bc *blockchain) getBalanceOfWallet(walletAddress string) float64 {
+func (bc *blockchain) getBalanceOfWallet(walletAddress PublicKey) float64 {
 	var balance float64
 
 	for _, block := range bc.chain {
 		for _, trans := range block.transactions {
-			if trans.fromAddress == walletAddress {
+			if trans.fromAddress.toString() == walletAddress.toString() {
 				balance -= trans.amount
-			} else if trans.toAddress == walletAddress {
+			} else if trans.toAddress.toString() == walletAddress.toString() {
 				balance += trans.amount
 			}
 		}
@@ -135,7 +136,7 @@ func (bc *blockchain) getAllTransactionsForWallet(walletAddress string) []*trans
 
 	for _, block := range bc.chain {
 		for _, trans := range block.transactions {
-			if trans.fromAddress == walletAddress || trans.toAddress == walletAddress {
+			if trans.toAddress.toString() == walletAddress || trans.fromAddress.toString() == walletAddress {
 				transactions = append(transactions, trans)
 			}
 		}
@@ -217,52 +218,48 @@ func (b *block) String() string {
 	return output.String()
 }
 
-func createTransaction(fromAddress, toAddress string, privateKey *rsa.PrivateKey, amount float64) *transaction {
+func createTransaction(fromAddress, toAddress PublicKey, amount float64) *transaction {
 	t := new(transaction)
 	t.toAddress = toAddress
 	t.fromAddress = fromAddress
 	t.time = time.Now()
 	t.amount = amount
 	t.hash = t.calculateHash()
-	t.sign(privateKey, fromAddress)
 	return t
 }
 
-func (t *transaction) calculateHash() string {
+func (t *transaction) calculateHash() []byte {
 	var hashString string
 	var hash [32]byte
 
-	hashString = t.toAddress + t.fromAddress + t.time.Format(time.ANSIC) + fmt.Sprintf("%f", t.amount)
+	hashString = t.toAddress.toString() + t.fromAddress.toString() + t.time.Format(time.ANSIC) + fmt.Sprintf("%f", t.amount)
 	hash = sha256.Sum256([]byte(hashString))
-	return string(hash[:])
+	return hash[:]
 }
 
 func (t *transaction) String() string {
-	return fmt.Sprintf("\tto address: %s\n\tfrom address: %s\n\ttimestamp: %s\n\thash: %x\n\tamount: %f\n\n",
+	return fmt.Sprintf("\tto address: %x\n\tfrom address: %x\n\ttimestamp: %s\n\thash: %x\n\tamount: %f\n\n",
 		t.toAddress, t.fromAddress, t.time.Format(time.ANSIC), t.hash, t.amount)
 }
 
 // sign signs a transaction's hash
-func (t *transaction) sign(privateKey *rsa.PrivateKey, walletAddress string) error {
-	if t.fromAddress != walletAddress {
+func (t *transaction) sign(privateKey PrivateKey, walletAddress PublicKey) error {
+	if t.fromAddress.toString() != walletAddress.toString() {
 		return errors.New("cannot sign transaction for other wallet")
 	}
 
-	signature, err := rsa.SignPSS(rand.Reader, privateKey, crypto.SHA256, []byte(t.hash), nil)
-	if err != nil {
-		return err
-	}
-	t.signature = string(signature)
+	signature := ed25519.Sign(ed25519.PrivateKey(privateKey), t.hash)
+	t.signature = signature
 
 	return nil
 }
 
 func (t *transaction) isValid() bool {
-	if t.fromAddress == "" {
+	if t.fromAddress == nil {
 		return true
 	}
 
-	if t.signature == "" || t.toAddress == "" {
+	if t.signature == nil || t.toAddress == nil {
 		return false
 	}
 
@@ -270,8 +267,5 @@ func (t *transaction) isValid() bool {
 		return false
 	}
 
-	pubKey := pubKeyFromPem(t.fromAddress)
-	err := rsa.VerifyPSS(pubKey, crypto.SHA256, []byte(t.calculateHash()), []byte(t.signature), nil)
-
-	return err == nil
+	return ed25519.Verify(ed25519.PublicKey(t.fromAddress), t.calculateHash(), t.signature)
 }

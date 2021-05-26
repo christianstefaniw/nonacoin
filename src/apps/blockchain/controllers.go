@@ -6,25 +6,23 @@ import (
 )
 
 func test(w http.ResponseWriter, r *http.Request) {
-	privateKey, _ := genPrivateKey()
-	publicKey := privateKey.PublicKey
+	publicKey, privateKey, _ := genKeys()
+	myWalletAddress := publicKey
 
-	myWalletAddress, err := genPublicPem(&publicKey)
-	if err != nil {
-		http.Error(w, err.Error(), http.StatusInternalServerError)
-		return
-	}
+	pub2, _, _ := genKeys()
+	otherAddress := pub2
 
 	bc := createBlockchain()
-	t := createTransaction(myWalletAddress, "you", privateKey, 20)
-	t2 := createTransaction(myWalletAddress, "someone", privateKey, 245)
-	valid := bc.appendTransactions(t, t2)
+	t := createTransaction(nil, myWalletAddress, 9000)
+	//t2 := createTransaction(myWalletAddress, otherAddress, privateKey, 245)
+	valid := bc.appendTransactions(t)
 	if !valid {
 		fmt.Println("not valid 1")
 	}
 	bc.minePendingTransactions()
 
-	t3 := createTransaction(myWalletAddress, "person", privateKey, 1000000)
+	t3 := createTransaction(myWalletAddress, otherAddress, 4)
+	t3.sign(privateKey, myWalletAddress)
 	valid2 := bc.appendTransactions(t3)
 	if !valid2 {
 		fmt.Println("not valid 2")
