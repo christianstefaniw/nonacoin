@@ -5,8 +5,6 @@ import (
 	"crypto/rand"
 	"crypto/rsa"
 	"crypto/sha256"
-	"crypto/x509"
-	"encoding/pem"
 	"errors"
 	"fmt"
 	"strconv"
@@ -52,11 +50,13 @@ func (bc *blockchain) length() int {
 	return len(bc.chain)
 }
 
+// create the fist block in the blockchain
 func (bc *blockchain) createGenesisBlock() *block {
 	genesis := createBlock(nil, "", 0)
 	return genesis
 }
 
+// create a new block with all of the pending transactions and mine the block
 func (bc *blockchain) minePendingTransactions() {
 	newBlock := createBlock(bc.pendingTransactions, bc.getLatestBlock().hash, bc.length())
 	newBlock.mine(bc.difficulty)
@@ -65,8 +65,16 @@ func (bc *blockchain) minePendingTransactions() {
 	bc.pendingTransactions = nil
 }
 
-func (bc *blockchain) appendTransactions(trans ...*transaction) {
-	bc.pendingTransactions = append(bc.pendingTransactions, trans...)
+// append transactions to the blockchain's pending transactions
+func (bc *blockchain) appendTransactions(transactions ...*transaction) bool {
+	for _, trans := range transactions {
+
+		if !trans.isValid() {
+			return false
+		}
+	}
+	bc.pendingTransactions = append(bc.pendingTransactions, transactions...)
+	return true
 }
 
 func (bc *blockchain) appendBlock(b *block) {
@@ -86,8 +94,9 @@ func (bc *blockchain) String() string {
 }
 
 func (bc *blockchain) isChainValid() bool {
-	for _, blck := range bc.chain[1:] {
+	for i, blck := range bc.chain[1:] {
 		currBlock := blck
+		prevBlock := bc.chain[i]
 
 		if !currBlock.hasValidTransactions() {
 			return false
@@ -96,9 +105,43 @@ func (bc *blockchain) isChainValid() bool {
 		if currBlock.hash != currBlock.calculateHash() {
 			return false
 		}
+
+		if prevBlock.calculateHash() != currBlock.prevHash {
+			return false
+		}
 	}
 
 	return true
+}
+
+func (bc *blockchain) getBalanceOfWallet(walletAddress string) float64 {
+	var balance float64
+
+	for _, block := range bc.chain {
+		for _, trans := range block.transactions {
+			if trans.fromAddress == walletAddress {
+				balance -= trans.amount
+			} else if trans.toAddress == walletAddress {
+				balance += trans.amount
+			}
+		}
+	}
+
+	return balance
+}
+
+func (bc *blockchain) getAllTransactionsForWallet(walletAddress string) []*transaction {
+	transactions := make([]*transaction, 0)
+
+	for _, block := range bc.chain {
+		for _, trans := range block.transactions {
+			if trans.fromAddress == walletAddress || trans.toAddress == walletAddress {
+				transactions = append(transactions, trans)
+			}
+		}
+	}
+
+	return transactions
 }
 
 func (bc *blockchain) getLatestBlock() *block {
@@ -116,6 +159,7 @@ func createBlock(transactions []*transaction, prevHash string, index int) *block
 	return b
 }
 
+// check that all transactions in a block are valid
 func (b *block) hasValidTransactions() bool {
 	for _, trans := range b.transactions {
 		if !trans.isValid() {
@@ -140,6 +184,7 @@ func (b *block) calculateHash() string {
 	return string(hash[:])
 }
 
+// mine validates a block by solving proof-of-work
 func (b *block) mine(difficulty uint8) bool {
 	var target strings.Builder
 
@@ -147,6 +192,7 @@ func (b *block) mine(difficulty uint8) bool {
 		target.WriteString(strconv.Itoa(i))
 	}
 
+	// proof of work
 	for b.hash[0:difficulty] != target.String() {
 		b.nonse += 1
 		b.hash = b.calculateHash()
@@ -196,6 +242,7 @@ func (t *transaction) String() string {
 		t.toAddress, t.fromAddress, t.time.Format(time.ANSIC), t.hash, t.amount)
 }
 
+// sign signs a transaction's hash
 func (t *transaction) sign(privateKey *rsa.PrivateKey, walletAddress string) error {
 	if t.fromAddress != walletAddress {
 		return errors.New("cannot sign transaction for other wallet")
@@ -215,23 +262,16 @@ func (t *transaction) isValid() bool {
 		return true
 	}
 
-	if t.signature == "" {
+	if t.signature == "" || t.toAddress == "" {
 		return false
 	}
 
-	pubKey := t.pubKeyFromPem()
+	if t.amount <= 0 {
+		return false
+	}
+
+	pubKey := pubKeyFromPem(t.fromAddress)
 	err := rsa.VerifyPSS(pubKey, crypto.SHA256, []byte(t.calculateHash()), []byte(t.signature), nil)
 
 	return err == nil
-}
-
-func (t *transaction) pubKeyFromPem() *rsa.PublicKey {
-	pemBlock, _ := pem.Decode([]byte(t.fromAddress))
-
-	parsedKey, err := x509.ParsePKIXPublicKey(pemBlock.Bytes)
-	if err != nil {
-		return nil
-	}
-
-	return parsedKey.(*rsa.PublicKey)
 }
