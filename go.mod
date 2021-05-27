@@ -3,6 +3,11 @@ module nonacoin
 go 1.15
 
 require (
-	github.com/ChristianStefaniw/cgr-v2 v0.0.0-20210524214458-80bc697c506e
+	github.com/golang/protobuf v1.5.2 // indirect
 	github.com/joho/godotenv v1.3.0
+	golang.org/x/net v0.0.0-20210525063256-abc453219eb5 // indirect
+	golang.org/x/sys v0.0.0-20210525143221-35b2ab0089ea // indirect
+	google.golang.org/genproto v0.0.0-20210524171403-669157292da3 // indirect
+	google.golang.org/grpc v1.38.0 // indirect
+	google.golang.org/protobuf v1.26.0 // indirect
 )

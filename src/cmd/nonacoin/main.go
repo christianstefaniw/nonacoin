@@ -1,11 +1,11 @@
 package main
 
 import (
+	"nonacoin/src/grpc"
 	"nonacoin/src/helpers"
-	"nonacoin/src/net"
 )
 
 func main() {
 	helpers.LoadDotEnv()
-	net.ServeHTTP()
+	grpc.Serve()
 }
