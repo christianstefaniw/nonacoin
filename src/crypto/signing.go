@@ -1,4 +1,4 @@
-package blockchain
+package crypto
 
 import (
 	"crypto/ed25519"
@@ -8,23 +8,23 @@ import (
 type PublicKey ed25519.PublicKey
 type PrivateKey ed25519.PrivateKey
 
-func (pubKey PublicKey) toString() string {
+func (pubKey PublicKey) String() string {
 	return string(pubKey)
 }
 
-func (pubKey PublicKey) verify(hash, sig []byte) bool {
+func (pubKey PublicKey) Verify(hash, sig []byte) bool {
 	return ed25519.Verify(ed25519.PublicKey(pubKey), hash, sig)
 }
 
-func (privKey PrivateKey) toString() string {
+func (privKey PrivateKey) String() string {
 	return string(privKey)
 }
 
-func (privKey PrivateKey) sign(data []byte) []byte {
+func (privKey PrivateKey) Sign(data []byte) []byte {
 	return ed25519.Sign(ed25519.PrivateKey(privKey), data)
 }
 
-func genKeys() (PublicKey, PrivateKey, error) {
+func GenKeys() (PublicKey, PrivateKey, error) {
 	pubKey, privKey, err := ed25519.GenerateKey(rand.Reader)
 	return PublicKey(pubKey), PrivateKey(privKey), err
 }

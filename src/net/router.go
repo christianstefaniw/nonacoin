@@ -1,7 +1,7 @@
 package net
 
 import (
-	blockchainapi "nonacoin/src/apps/blockchain"
+	"nonacoin/src/apps/blockchain"
 
 	"github.com/ChristianStefaniw/cgr-v2"
 )
@@ -9,6 +9,6 @@ import (
 func Router() *cgr.Router {
 	r := cgr.NewRouter()
 
-	blockchainapi.GenRoutes(r, "blockchain")
+	blockchain.GenRoutes(r, "blockchain")
 	return r
 }
