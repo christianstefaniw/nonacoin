@@ -1,3 +1,3 @@
 # apps/
 
-This directory contains decoupled apps that are part of the rest api
+This directory contains decoupled apps that are part of the gRPC api

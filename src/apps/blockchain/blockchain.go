@@ -28,6 +28,10 @@ func (bc *blockchain) length() int {
 	return len(bc.chain)
 }
 
+func (bc *blockchain) getGenesis() *blocks.Block {
+	return bc.chain[0]
+}
+
 // create the fist block in the blockchain
 func (bc *blockchain) createGenesisBlock() *blocks.Block {
 	genesis := blocks.CreateBlock(nil, "", 0)

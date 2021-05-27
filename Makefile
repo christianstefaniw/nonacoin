@@ -3,6 +3,20 @@ SRC_DIR = src
 BIN_DIR = bin
 BIN_NAME = nonacoin
 IMAGE_NAME = 12152004/nonacoin:latest
+PROTO_PATH = /home/christianstefaniw/Desktop/code/src/github.com/christianstefaniw/nonacoin/nonacoin-protobufs
+COVERAGE_DIR = coverage
+
+.PHONY: blockchain test test-blockchain test-cov
+
+test-cov:
+	go test ./... -coverprofile $(COVERAGE_DIR)/coverage.out
+	go tool cover -func $(COVERAGE_DIR)/coverage.out
+
+test:
+	go test ./...
+
+test-blockchain:
+	go test ./$(SRC_DIR)/apps/blockchain
 
 docker-build:
 	sudo docker build . -t $(IMAGE_NAME)
@@ -15,3 +29,6 @@ build:
 
 run:
 	go run $(SRC_DIR)/$(NONACOIN)
+
+blockchain-pb:
+	protoc --go_out=plugins=grpc:src/apps/blockchain --proto_path=$(PROTO_PATH) blockchain.proto
