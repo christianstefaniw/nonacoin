@@ -9,8 +9,8 @@ COVERAGE_DIR = coverage
 .PHONY: blockchain test test-blockchain test-cov
 
 test-cov:
-	go test ./... -coverprofile $(COVERAGE_DIR)/coverage.out
-	go tool cover -func $(COVERAGE_DIR)/coverage.out
+	go test ./... -coverprofile $(COVERAGE_DIR)/coverage.txt
+	go tool cover -func $(COVERAGE_DIR)/coverage.txt
 
 test:
 	go test ./...
