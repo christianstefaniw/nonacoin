@@ -1,6 +1,6 @@
 mode: set
 nonacoin/src/apps/blockchain/blockchain.go:17.37,25.2 6 1
-nonacoin/src/apps/blockchain/blockchain.go:27.36,29.2 1 0
+nonacoin/src/apps/blockchain/blockchain.go:27.36,29.2 1 1
 nonacoin/src/apps/blockchain/blockchain.go:31.50,33.2 1 1
 nonacoin/src/apps/blockchain/blockchain.go:36.58,39.2 2 1
 nonacoin/src/apps/blockchain/blockchain.go:42.49,48.2 4 0

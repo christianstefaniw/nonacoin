@@ -2,6 +2,7 @@ package blockchain
 
 import (
 	"fmt"
+	"nonacoin/src/account"
 	"nonacoin/src/blocks"
 	"nonacoin/src/crypto"
 	trans "nonacoin/src/transactions"
@@ -9,6 +10,7 @@ import (
 )
 
 type blockchain struct {
+	account             *account.Account
 	difficulty          uint8
 	pendingTransactions []*trans.Transaction
 	chain               []*blocks.Block
@@ -17,6 +19,7 @@ type blockchain struct {
 func createBlockchain() *blockchain {
 	bc := new(blockchain)
 	bc.chain = make([]*blocks.Block, 0)
+	bc.account = account.GetAccountInstance()
 	bc.pendingTransactions = make([]*trans.Transaction, 0)
 
 	bc.chain = append(bc.chain, bc.createGenesisBlock())
@@ -36,15 +39,6 @@ func (bc *blockchain) getGenesis() *blocks.Block {
 func (bc *blockchain) createGenesisBlock() *blocks.Block {
 	genesis := blocks.CreateBlock(nil, "", 0)
 	return genesis
-}
-
-// create a new block with all of the pending transactions and mine the block
-func (bc *blockchain) minePendingTransactions() {
-	newBlock := blocks.CreateBlock(bc.pendingTransactions, bc.getLatestBlock().GetHash(), bc.length())
-	newBlock.Mine(bc.difficulty)
-	bc.appendBlock(newBlock)
-
-	bc.pendingTransactions = nil
 }
 
 // append transactions to the blockchain's pending transactions

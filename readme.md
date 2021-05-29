@@ -1,4 +1,4 @@
-<div align="center">
+<div align="center" style="margin-bottom: 1rem">
     <h1>🪙 The Nonacoin Cryptocurrency 🪙</h1>
     <div>
         <a href="https://travis-ci.com/christianstefaniw/nonacoin.svg?branch=master">

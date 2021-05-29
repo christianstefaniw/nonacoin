@@ -1,14 +1,16 @@
 NONACOIN = cmd/nonacoin/main.go
 SRC_DIR = src
 BIN_DIR = bin
-BIN_NAME = nonacoin
+NONA_BIN_NAME = nonacoin
+CLIENT_BIN_NAME = client
 IMAGE_NAME = 12152004/nonacoin:latest
 PROTO_PATH = /home/christianstefaniw/Desktop/code/src/github.com/christianstefaniw/nonacoin/nonacoin-protobufs
 COVERAGE_DIR = coverage
+TEST_CLIENT = cmd/temp_client/main.go
 
-.PHONY: blockchain test test-blockchain test-cov
+.PHONY: blockchainpb test test-blockchain cov
 
-test-cov:
+cov:
 	go test ./... -coverprofile $(COVERAGE_DIR)/coverage.txt
 	go tool cover -func $(COVERAGE_DIR)/coverage.txt
 
@@ -24,11 +26,20 @@ docker-build:
 docker-push:
 	sudo docker push $(IMAGE_NAME)
 
-build:
-	go build -o $(BIN_DIR)/$(BIN_NAME) $(SRC_DIR)/$(NONACOIN)
+nonacoin-build:
+	go build -o $(BIN_DIR)/$(NONA_BIN_NAME) $(SRC_DIR)/$(NONACOIN)
 
-run:
+nonacoin-run:
 	go run $(SRC_DIR)/$(NONACOIN)
 
-blockchain-pb:
+client-run:
+	go run $(SRC_DIR)/$(TEST_CLIENT)
+
+client-build:
+	go build -o $(BIN_DIR)/$(NONA_BIN_NAME) $(SRC_DIR)/$(TEST_CLIENT)
+
+blockchainpb:
 	protoc --go_out=plugins=grpc:src/apps/blockchain --proto_path=$(PROTO_PATH) blockchain.proto
+
+peer2peerpb:
+	protoc --go_out=plugins=grpc:src/apps/peer2peer --proto_path=$(PROTO_PATH) peer2peer.proto

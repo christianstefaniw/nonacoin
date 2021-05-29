@@ -11,7 +11,6 @@ import (
 
 type Block struct {
 	hash         string
-	nonse        int64
 	time         time.Time
 	index        int
 	transactions []*trans.Transaction
@@ -22,7 +21,6 @@ func CreateBlock(transactions []*trans.Transaction, prevHash string, index int) 
 	b := new(Block)
 	b.index = index
 	b.time = time.Now()
-	b.nonse = 0
 	b.prevHash = prevHash
 	b.transactions = transactions
 	b.hash = b.CalculateHash()
@@ -49,33 +47,15 @@ func (b *Block) CalculateHash() string {
 	}
 
 	hashString = b.time.Format(time.ANSIC) + hashTransactions.String() + b.prevHash +
-		strconv.Itoa(int(b.index)) + strconv.Itoa(int(b.nonse))
+		strconv.Itoa(int(b.index))
 	hash = sha256.Sum256([]byte(hashString))
 	return string(hash[:])
 }
 
-// mine validates a block by solving proof-of-work
-func (b *Block) Mine(difficulty uint8) bool {
-	var target strings.Builder
-
-	for i := 0; i < int(difficulty); i++ {
-		target.WriteString(strconv.Itoa(i))
-	}
-
-	// proof of work
-	for b.hash[0:difficulty] != target.String() {
-		b.nonse += 1
-		b.hash = b.CalculateHash()
-	}
-
-	return true
-}
-
 func (b *Block) String() string {
 	var output strings.Builder
-	output.WriteString(fmt.Sprintf("BLOCK %d \nhash: %x\ntime: %s\nprev hash: %x\nindex: %d\nnonse: %d\n",
-		b.index, b.hash, b.time.Format(time.ANSIC), b.prevHash, b.index, b.nonse))
-
+	output.WriteString(fmt.Sprintf("BLOCK %d \nhash: %x\ntime: %s\nprev hash: %x\nindex: %d\n",
+		b.index, b.hash, b.time.Format(time.ANSIC), b.prevHash, b.index))
 	output.WriteString("transactions: [\n")
 
 	for _, t := range b.transactions {

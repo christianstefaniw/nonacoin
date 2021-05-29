@@ -16,6 +16,14 @@ func (pubKey PublicKey) Verify(hash, sig []byte) bool {
 	return ed25519.Verify(ed25519.PublicKey(pubKey), hash, sig)
 }
 
+func (pubKey PublicKey) Compare(key string) bool {
+	return pubKey.String() == key
+}
+
+func (pubKey PublicKey) Bytes() []byte {
+	return []byte(pubKey)
+}
+
 func (privKey PrivateKey) String() string {
 	return string(privKey)
 }
