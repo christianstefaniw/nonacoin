@@ -3,20 +3,21 @@ package peer2peer
 import (
 	"context"
 	"nonacoin/src/apps/peer2peer/peer2peerpb"
-	"nonacoin/src/pos"
+	"nonacoin/src/transactions"
 )
 
 type peer2PeerNetwork struct {
-	validators []*pos.ValidatorNode
+	nodes           []*peerNode
+	transactionPool transactions.TransactionPool
 }
 
-func (p *peer2PeerNetwork) AppendValidator(n *pos.ValidatorNode) {
-	p.validators = append(GetPeer2PeerInstance().validators, n)
+func (p *peer2PeerNetwork) AppendNode(n *peerNode) {
+	p.nodes = append(p.nodes, n)
 }
 
 func newPeer2PeerServer() *peer2PeerNetwork {
 	new := new(peer2PeerNetwork)
-	new.validators = make([]*pos.ValidatorNode, 0)
+	new.nodes = make([]*peerNode, 0)
 	return new
 }
 

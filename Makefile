@@ -26,6 +26,9 @@ docker-build:
 docker-push:
 	sudo docker push $(IMAGE_NAME)
 
+docker-run:
+	sudo docker run -p 8080:8080 $(IMAGE_NAME)
+
 nonacoin-build:
 	go build -o $(BIN_DIR)/$(NONA_BIN_NAME) $(SRC_DIR)/$(NONACOIN)
 

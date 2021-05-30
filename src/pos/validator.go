@@ -1,12 +1,21 @@
 package pos
 
 import (
-	"nonacoin/src/apps/peer2peer/peer2peerpb"
-	"nonacoin/src/wallet"
+	"nonacoin/src/apps/peer2peer"
 )
 
+type Validators struct {
+	validators []*ValidatorNode
+}
+
 type ValidatorNode struct {
-	Wallet *wallet.Wallet                      `json:"wallet"`
-	Client peer2peerpb.PeerToPeerServiceClient `json:"client"`
-	Stake  int                                 `json:"stake"`
+	PeerNode *peer2peer.PeerNode `json:"peer"`
+	Stake    *stake              `json:"stake"`
+}
+
+func NewValidatorNode(peer *peer2peer.PeerNode, s *stake) *ValidatorNode {
+	return &ValidatorNode{
+		PeerNode: peer,
+		Stake:    s,
+	}
 }

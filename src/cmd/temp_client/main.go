@@ -19,7 +19,7 @@ func main() {
 	client := peer2peerpb.NewPeerToPeerServiceClient(cc)
 	wlt := wallet.NewWallet()
 
-	peer := peer2peer.NewPeer(wlt, client)
+	peer := peer2peer.NewPeerNode(wlt, client)
 	syncChain(client, peer)
 }
 
