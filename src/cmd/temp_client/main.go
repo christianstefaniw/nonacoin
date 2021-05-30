@@ -11,5 +11,5 @@ func main() {
 	wlt := wallet.NewWallet()
 	wlt.SetPubKey("1234")
 	node := peer2peer.NewPeerNode("127.0.0.1:8081", wlt)
-	node.Start()
+	node.StartServer()
 }

@@ -1,5 +1,6 @@
 package account
 
+// manages transactions
 type Account struct {
 	walletBalances map[string]float64
 }
