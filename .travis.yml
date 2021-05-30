@@ -3,6 +3,9 @@ language: go
 go:
   - "1.16"
 
+install:
+  - go get -t -v ./...
+
 script:
   - go test ./... -coverprofile coverage/coverage.txt
 
