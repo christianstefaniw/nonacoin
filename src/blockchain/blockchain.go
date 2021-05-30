@@ -4,13 +4,11 @@ import (
 	"fmt"
 	"nonacoin/src/account"
 	"nonacoin/src/blocks"
-	"nonacoin/src/pos"
 	"strings"
 )
 
 type Blockchain struct {
 	account    *account.Account
-	validators *pos.Validators
 	difficulty uint8
 	chain      []*blocks.Block
 }

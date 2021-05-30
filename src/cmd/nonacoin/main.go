@@ -1,11 +1,21 @@
 package main
 
 import (
-	"nonacoin/src/grpc"
+	"context"
+	"fmt"
+	"nonacoin/src/apps/peer2peer"
+	"nonacoin/src/apps/peer2peer/peer2peerpb"
 	"nonacoin/src/helpers"
+	"nonacoin/src/wallet"
 )
 
 func main() {
 	helpers.LoadDotEnv()
-	grpc.Serve()
+	wlt := wallet.NewWallet()
+	node := peer2peer.NewPeerNode("127.0.0.1:8080", wlt)
+	node.Start()
+	cc, client := node.SetupClient("1234", "127.0.0.1:8081")
+	resp, _ := client.SyncChain(context.Background(), &peer2peerpb.SyncChainRequest{Peer: "test"})
+	fmt.Println(resp.GetNodes())
+	fmt.Println(cc.GetState())
 }

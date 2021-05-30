@@ -20,6 +20,11 @@ func (w *Wallet) GetPubKey() crypto.PublicKey {
 	return w.PubKey
 }
 
+func (w *Wallet) SetPubKey(newKey string) crypto.PublicKey {
+	w.PubKey = []byte(newKey)
+	return w.PubKey
+}
+
 func (w *Wallet) GetPrivKey() crypto.PrivateKey {
 	return w.PrivKey
 }

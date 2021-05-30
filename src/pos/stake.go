@@ -1,7 +1,7 @@
 package pos
 
-type stake struct{}
+type Stake struct{}
 
-func NewStake() *stake {
-	return new(stake)
+func NewStake() *Stake {
+	return new(Stake)
 }
