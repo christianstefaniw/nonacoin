@@ -23,7 +23,7 @@ func main() {
 	syncChain(client, peer)
 }
 
-func syncChain(client peer2peerpb.PeerToPeerServiceClient, peer *peer2peer.Node) {
+func syncChain(client peer2peerpb.PeerToPeerServiceClient, peer *peer2peer.PeerNode) {
 	marshaled, _ := json.Marshal(peer)
 
 	request := &peer2peerpb.SyncChainRequest{

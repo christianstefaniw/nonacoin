@@ -2,10 +2,10 @@ package blockchain
 
 import "sync"
 
-var _instance *blockchain
+var _instance *Blockchain
 var _once sync.Once
 
-func GetBlockchainInstance() *blockchain {
+func GetBlockchainInstance() *Blockchain {
 	_once.Do(func() {
 		_instance = createBlockchain()
 	})

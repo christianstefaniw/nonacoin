@@ -38,8 +38,8 @@ client-run:
 client-build:
 	go build -o $(BIN_DIR)/$(NONA_BIN_NAME) $(SRC_DIR)/$(TEST_CLIENT)
 
-blockchainpb:
-	protoc --go_out=plugins=grpc:src/apps/blockchain --proto_path=$(PROTO_PATH) blockchain.proto
-
 peer2peerpb:
 	protoc --go_out=plugins=grpc:src/apps/peer2peer --proto_path=$(PROTO_PATH) peer2peer.proto
+
+pospb:
+	protoc --go_out=plugins=grpc:src/apps/pos --proto_path=$(PROTO_PATH) pos.proto

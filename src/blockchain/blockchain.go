@@ -9,15 +9,15 @@ import (
 	"strings"
 )
 
-type blockchain struct {
+type Blockchain struct {
 	account             *account.Account
 	difficulty          uint8
 	pendingTransactions []*trans.Transaction
 	chain               []*blocks.Block
 }
 
-func createBlockchain() *blockchain {
-	bc := new(blockchain)
+func createBlockchain() *Blockchain {
+	bc := new(Blockchain)
 	bc.chain = make([]*blocks.Block, 0)
 	bc.account = account.GetAccountInstance()
 	bc.pendingTransactions = make([]*trans.Transaction, 0)
@@ -27,22 +27,22 @@ func createBlockchain() *blockchain {
 	return bc
 }
 
-func (bc *blockchain) length() int {
+func (bc *Blockchain) length() int {
 	return len(bc.chain)
 }
 
-func (bc *blockchain) getGenesis() *blocks.Block {
+func (bc *Blockchain) getGenesis() *blocks.Block {
 	return bc.chain[0]
 }
 
 // create the fist block in the blockchain
-func (bc *blockchain) createGenesisBlock() *blocks.Block {
+func (bc *Blockchain) createGenesisBlock() *blocks.Block {
 	genesis := blocks.CreateBlock(nil, "", 0)
 	return genesis
 }
 
 // append transactions to the blockchain's pending transactions
-func (bc *blockchain) appendTransactions(transactions ...*trans.Transaction) bool {
+func (bc *Blockchain) appendTransactions(transactions ...*trans.Transaction) bool {
 	for _, trans := range transactions {
 		if trans.GetFromAddress() != nil && bc.getBalanceOfWallet(trans.GetFromAddress()) < trans.GetAmount() {
 			return false
@@ -56,11 +56,11 @@ func (bc *blockchain) appendTransactions(transactions ...*trans.Transaction) boo
 	return true
 }
 
-func (bc *blockchain) appendBlock(b *blocks.Block) {
+func (bc *Blockchain) appendBlock(b *blocks.Block) {
 	bc.chain = append(bc.chain, b)
 }
 
-func (bc *blockchain) String() string {
+func (bc *Blockchain) String() string {
 	var output strings.Builder
 
 	for _, b := range bc.chain {
@@ -72,7 +72,7 @@ func (bc *blockchain) String() string {
 	return output.String()
 }
 
-func (bc *blockchain) isChainValid() bool {
+func (bc *Blockchain) isChainValid() bool {
 	for i, blck := range bc.chain[1:] {
 		currBlock := blck
 		prevBlock := bc.chain[i]
@@ -93,9 +93,7 @@ func (bc *blockchain) isChainValid() bool {
 	return true
 }
 
-func (bc *blockchain) registerNode() {}
-
-func (bc *blockchain) getBalanceOfWallet(walletAddress crypto.PublicKey) float64 {
+func (bc *Blockchain) getBalanceOfWallet(walletAddress crypto.PublicKey) float64 {
 	var balance float64
 
 	for _, block := range bc.chain {
@@ -111,7 +109,7 @@ func (bc *blockchain) getBalanceOfWallet(walletAddress crypto.PublicKey) float64
 	return balance
 }
 
-func (bc *blockchain) getAllTransactionsForWallet(walletAddress crypto.PublicKey) []*trans.Transaction {
+func (bc *Blockchain) getAllTransactionsForWallet(walletAddress crypto.PublicKey) []*trans.Transaction {
 	transactions := make([]*trans.Transaction, 0)
 
 	for _, block := range bc.chain {
@@ -125,6 +123,6 @@ func (bc *blockchain) getAllTransactionsForWallet(walletAddress crypto.PublicKey
 	return transactions
 }
 
-func (bc *blockchain) getLatestBlock() *blocks.Block {
+func (bc *Blockchain) getLatestBlock() *blocks.Block {
 	return bc.chain[bc.length()-1]
 }
