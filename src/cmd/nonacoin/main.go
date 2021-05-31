@@ -3,9 +3,9 @@ package main
 import (
 	"context"
 	"fmt"
-	"nonacoin/src/apps/peer2peer"
-	"nonacoin/src/apps/peer2peer/peer2peerpb"
 	"nonacoin/src/helpers"
+	"nonacoin/src/peer2peer"
+	"nonacoin/src/peer2peer/peer2peerpb"
 	"nonacoin/src/wallet"
 )
 

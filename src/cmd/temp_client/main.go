@@ -1,8 +1,8 @@
 package main
 
 import (
-	"nonacoin/src/apps/peer2peer"
 	"nonacoin/src/helpers"
+	"nonacoin/src/peer2peer"
 	"nonacoin/src/wallet"
 )
 
