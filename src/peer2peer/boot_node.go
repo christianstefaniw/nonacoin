@@ -19,6 +19,10 @@ func (n *BootNode) StartServer() {
 	go n.server.start()
 }
 
+func (n *BootNode) WhichNode() int {
+	return bootNode
+}
+
 func NewRoutingArray() RoutingArray {
 	return make(RoutingArray, 0)
 }

@@ -12,10 +12,13 @@ import (
 
 const (
 	transThreshold = 1
+	peerNode       = iota
+	bootNode
 )
 
 type Node interface {
 	StartServer()
+	WhichNode() int
 }
 
 type PeerNode struct {
@@ -33,6 +36,10 @@ func NewPeerNode(addr string, wlt *wallet.Wallet) *PeerNode {
 	new.server = newPeer2PeerServer(addr, new)
 	new.transactionPool = transactions.NewPool(transThreshold)
 	return new
+}
+
+func (p *PeerNode) WhichNode() int {
+	return peerNode
 }
 
 func (p *PeerNode) StartServer() {

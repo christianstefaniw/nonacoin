@@ -3,6 +3,7 @@ package peer2peer
 import (
 	"log"
 	"net"
+	"nonacoin/src/peer2peer/bootnodepb"
 	"nonacoin/src/peer2peer/peer2peerpb"
 
 	"google.golang.org/grpc"
@@ -23,12 +24,12 @@ func newPeer2PeerServer(addr string, node Node) *peer2PeerServer {
 	return &peer2PeerServer{
 		node:         node,
 		addr:         addr,
-		peers:        NewConnectedPeersTable(),
+		peers:        NewConnectedPeersArray(),
 		routingArray: NewRoutingArray(),
 	}
 }
 
-func NewConnectedPeersTable() ConnectedPeersTable {
+func NewConnectedPeersArray() ConnectedPeersTable {
 	return make(ConnectedPeersTable)
 }
 
@@ -45,7 +46,13 @@ func (s *peer2PeerServer) startListening() {
 
 	grpcServer := grpc.NewServer()
 
-	peer2peerpb.RegisterPeerToPeerServiceServer(grpcServer, s.node.(peer2peerpb.PeerToPeerServiceServer))
+	switch s.node.WhichNode() {
+	case peerNode:
+		peer2peerpb.RegisterPeerToPeerServiceServer(grpcServer, s.node.(peer2peerpb.PeerToPeerServiceServer))
+	case bootNode:
+		bootnodepb.RegisterBootstrapNodeServiceServer(grpcServer, s.node.(bootnodepb.BootstrapNodeServiceServer))
+	}
+
 	if err := grpcServer.Serve(lis); err != nil {
 		log.Fatalf("failed to serve: %v", err)
 	}
