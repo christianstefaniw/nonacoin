@@ -6,7 +6,7 @@ CLIENT_BIN_NAME = client
 IMAGE_NAME = 12152004/nonacoin:latest
 PROTO_PATH = /home/christianstefaniw/Desktop/code/src/github.com/christianstefaniw/nonacoin/nonacoin-protobufs
 COVERAGE_DIR = coverage
-TEST_CLIENT = cmd/temp_client/main.go
+BOOT_NODE_2 = cmd/boot_node_2/main.go
 BOOT_NODE = cmd/boot_node/main.go
 
 .PHONY: blockchainpb test test-blockchain cov
@@ -42,11 +42,11 @@ bootnode-build:
 bootnode-run:
 	go run $(SRC_DIR)/$(BOOT_NODE)
 
-client-run:
-	go run $(SRC_DIR)/$(TEST_CLIENT)
+bootnode2-run:
+	go run $(SRC_DIR)/$(BOOT_NODE_2)
 
-client-build:
-	go build -o $(BIN_DIR)/$(NONA_BIN_NAME) $(SRC_DIR)/$(TEST_CLIENT)
+bootnode2-build:
+	go build -o $(BIN_DIR)/$(NONA_BIN_NAME) $(SRC_DIR)/$(BOOT_NODE_2)
 
 peer2peerpb:
 	protoc --go_out=plugins=grpc:src/peer2peer --proto_path=$(PROTO_PATH) peer2peer.proto

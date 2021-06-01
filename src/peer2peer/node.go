@@ -3,30 +3,25 @@ package peer2peer
 import (
 	"nonacoin/src/account"
 	"nonacoin/src/blockchain"
-	"nonacoin/src/pos"
+	"nonacoin/src/peer2peer/peer2peerpb"
 	"nonacoin/src/transactions"
 )
 
+type NodeType int
+
 const (
-	transThreshold = 1
-	peerNode       = iota
+	transThreshold          = 1
+	peerNode       NodeType = iota
 	bootNode
 )
 
-type Node interface {
-	StartServer()
-	WhichNode() int
-}
-
 type PeerNode struct {
-	validator       bool
 	server          *peer2PeerServer
-	stake           *pos.Stake
 	transactionPool *transactions.TransactionPool
 	blockchain      *blockchain.Blockchain
 }
 
-func NewPeerNode(addr string, acc *account.Account) *PeerNode {
+func newPeerNode(addr string, acc *account.Account) *PeerNode {
 	new := new(PeerNode)
 	new.server = newPeer2PeerServer(addr, new)
 	new.transactionPool = transactions.NewPool(transThreshold)
@@ -34,11 +29,11 @@ func NewPeerNode(addr string, acc *account.Account) *PeerNode {
 	return new
 }
 
-func EmptyPeerNode() *PeerNode {
-	return new(PeerNode)
+func (p *PeerNode) GetAddr() string {
+	return p.server.addr
 }
 
-func (p *PeerNode) WhichNode() int {
+func (p *PeerNode) WhichNode() NodeType {
 	return peerNode
 }
 
@@ -46,10 +41,6 @@ func (p *PeerNode) StartServer() {
 	p.server.start()
 }
 
-func (p *PeerNode) ConnectToClient(addr IP) interface{} {
+func (p *PeerNode) ConnectToClient(addr string) (peer2peerpb.PeerToPeerServiceClient, error) {
 	return p.server.setupClient(addr)
-}
-
-func (p *PeerNode) IsValidator() bool {
-	return p.validator
 }

@@ -8,6 +8,6 @@ import (
 
 func main() {
 	helpers.LoadDotEnv()
-	bootNode := peer2peer.NewBootNode(nonacoin.BOOT_NODES_ADDR[0])
+	bootNode := peer2peer.NewBootNode(nonacoin.BOOT_NODES_ADDR[1])
 	bootNode.StartServer()
 }
