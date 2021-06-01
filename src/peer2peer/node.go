@@ -1,13 +1,10 @@
 package peer2peer
 
 import (
+	"nonacoin/src/account"
 	"nonacoin/src/blockchain"
-	"nonacoin/src/peer2peer/peer2peerpb"
 	"nonacoin/src/pos"
 	"nonacoin/src/transactions"
-	"nonacoin/src/wallet"
-
-	"google.golang.org/grpc"
 )
 
 const (
@@ -25,17 +22,20 @@ type PeerNode struct {
 	validator       bool
 	server          *peer2PeerServer
 	stake           *pos.Stake
-	wallet          *wallet.Wallet
 	transactionPool *transactions.TransactionPool
 	blockchain      *blockchain.Blockchain
 }
 
-func NewPeerNode(addr string, wlt *wallet.Wallet) *PeerNode {
+func NewPeerNode(addr string, acc *account.Account) *PeerNode {
 	new := new(PeerNode)
-	new.wallet = wlt
 	new.server = newPeer2PeerServer(addr, new)
 	new.transactionPool = transactions.NewPool(transThreshold)
+	new.blockchain = blockchain.NewBlockchain(acc)
 	return new
+}
+
+func EmptyPeerNode() *PeerNode {
+	return new(PeerNode)
 }
 
 func (p *PeerNode) WhichNode() int {
@@ -46,8 +46,8 @@ func (p *PeerNode) StartServer() {
 	p.server.start()
 }
 
-func (p *PeerNode) ConnectToClient(ip IP, addr string) (*grpc.ClientConn, peer2peerpb.PeerToPeerServiceClient) {
-	return p.server.setupClient(ip, addr)
+func (p *PeerNode) ConnectToClient(addr IP) interface{} {
+	return p.server.setupClient(addr)
 }
 
 func (p *PeerNode) IsValidator() bool {

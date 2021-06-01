@@ -28,6 +28,8 @@ type BootstrapRequest struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
+
+	Addr string `protobuf:"bytes,1,opt,name=addr,proto3" json:"addr,omitempty"`
 }
 
 func (x *BootstrapRequest) Reset() {
@@ -62,12 +64,19 @@ func (*BootstrapRequest) Descriptor() ([]byte, []int) {
 	return file_boot_node_proto_rawDescGZIP(), []int{0}
 }
 
+func (x *BootstrapRequest) GetAddr() string {
+	if x != nil {
+		return x.Addr
+	}
+	return ""
+}
+
 type BootstrapResponse struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	RoutingArray []string `protobuf:"bytes,1,rep,name=routingArray,proto3" json:"routingArray,omitempty"`
+	Success bool `protobuf:"varint,1,opt,name=success,proto3" json:"success,omitempty"`
 }
 
 func (x *BootstrapResponse) Reset() {
@@ -102,31 +111,31 @@ func (*BootstrapResponse) Descriptor() ([]byte, []int) {
 	return file_boot_node_proto_rawDescGZIP(), []int{1}
 }
 
-func (x *BootstrapResponse) GetRoutingArray() []string {
+func (x *BootstrapResponse) GetSuccess() bool {
 	if x != nil {
-		return x.RoutingArray
+		return x.Success
 	}
-	return nil
+	return false
 }
 
 var File_boot_node_proto protoreflect.FileDescriptor
 
 var file_boot_node_proto_rawDesc = []byte{
 	0x0a, 0x0f, 0x62, 0x6f, 0x6f, 0x74, 0x5f, 0x6e, 0x6f, 0x64, 0x65, 0x2e, 0x70, 0x72, 0x6f, 0x74,
-	0x6f, 0x12, 0x09, 0x70, 0x65, 0x65, 0x72, 0x32, 0x70, 0x65, 0x65, 0x72, 0x22, 0x12, 0x0a, 0x10,
+	0x6f, 0x12, 0x09, 0x70, 0x65, 0x65, 0x72, 0x32, 0x70, 0x65, 0x65, 0x72, 0x22, 0x26, 0x0a, 0x10,
 	0x62, 0x6f, 0x6f, 0x74, 0x73, 0x74, 0x72, 0x61, 0x70, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74,
-	0x22, 0x37, 0x0a, 0x11, 0x62, 0x6f, 0x6f, 0x74, 0x73, 0x74, 0x72, 0x61, 0x70, 0x52, 0x65, 0x73,
-	0x70, 0x6f, 0x6e, 0x73, 0x65, 0x12, 0x22, 0x0a, 0x0c, 0x72, 0x6f, 0x75, 0x74, 0x69, 0x6e, 0x67,
-	0x41, 0x72, 0x72, 0x61, 0x79, 0x18, 0x01, 0x20, 0x03, 0x28, 0x09, 0x52, 0x0c, 0x72, 0x6f, 0x75,
-	0x74, 0x69, 0x6e, 0x67, 0x41, 0x72, 0x72, 0x61, 0x79, 0x32, 0x60, 0x0a, 0x14, 0x62, 0x6f, 0x6f,
-	0x74, 0x73, 0x74, 0x72, 0x61, 0x70, 0x4e, 0x6f, 0x64, 0x65, 0x53, 0x65, 0x72, 0x76, 0x69, 0x63,
-	0x65, 0x12, 0x48, 0x0a, 0x09, 0x62, 0x6f, 0x6f, 0x74, 0x73, 0x74, 0x72, 0x61, 0x70, 0x12, 0x1b,
-	0x2e, 0x70, 0x65, 0x65, 0x72, 0x32, 0x70, 0x65, 0x65, 0x72, 0x2e, 0x62, 0x6f, 0x6f, 0x74, 0x73,
-	0x74, 0x72, 0x61, 0x70, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x1a, 0x1c, 0x2e, 0x70, 0x65,
-	0x65, 0x72, 0x32, 0x70, 0x65, 0x65, 0x72, 0x2e, 0x62, 0x6f, 0x6f, 0x74, 0x73, 0x74, 0x72, 0x61,
-	0x70, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x22, 0x00, 0x42, 0x0d, 0x5a, 0x0b, 0x2f,
-	0x62, 0x6f, 0x6f, 0x74, 0x6e, 0x6f, 0x64, 0x65, 0x70, 0x62, 0x62, 0x06, 0x70, 0x72, 0x6f, 0x74,
-	0x6f, 0x33,
+	0x12, 0x12, 0x0a, 0x04, 0x61, 0x64, 0x64, 0x72, 0x18, 0x01, 0x20, 0x01, 0x28, 0x09, 0x52, 0x04,
+	0x61, 0x64, 0x64, 0x72, 0x22, 0x2d, 0x0a, 0x11, 0x62, 0x6f, 0x6f, 0x74, 0x73, 0x74, 0x72, 0x61,
+	0x70, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x12, 0x18, 0x0a, 0x07, 0x73, 0x75, 0x63,
+	0x63, 0x65, 0x73, 0x73, 0x18, 0x01, 0x20, 0x01, 0x28, 0x08, 0x52, 0x07, 0x73, 0x75, 0x63, 0x63,
+	0x65, 0x73, 0x73, 0x32, 0x5b, 0x0a, 0x0f, 0x62, 0x6f, 0x6f, 0x74, 0x4e, 0x6f, 0x64, 0x65, 0x53,
+	0x65, 0x72, 0x76, 0x69, 0x63, 0x65, 0x12, 0x48, 0x0a, 0x09, 0x62, 0x6f, 0x6f, 0x74, 0x73, 0x74,
+	0x72, 0x61, 0x70, 0x12, 0x1b, 0x2e, 0x70, 0x65, 0x65, 0x72, 0x32, 0x70, 0x65, 0x65, 0x72, 0x2e,
+	0x62, 0x6f, 0x6f, 0x74, 0x73, 0x74, 0x72, 0x61, 0x70, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74,
+	0x1a, 0x1c, 0x2e, 0x70, 0x65, 0x65, 0x72, 0x32, 0x70, 0x65, 0x65, 0x72, 0x2e, 0x62, 0x6f, 0x6f,
+	0x74, 0x73, 0x74, 0x72, 0x61, 0x70, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x22, 0x00,
+	0x42, 0x0d, 0x5a, 0x0b, 0x2f, 0x62, 0x6f, 0x6f, 0x74, 0x6e, 0x6f, 0x64, 0x65, 0x70, 0x62, 0x62,
+	0x06, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x33,
 }
 
 var (
@@ -147,8 +156,8 @@ var file_boot_node_proto_goTypes = []interface{}{
 	(*BootstrapResponse)(nil), // 1: peer2peer.bootstrapResponse
 }
 var file_boot_node_proto_depIdxs = []int32{
-	0, // 0: peer2peer.bootstrapNodeService.bootstrap:input_type -> peer2peer.bootstrapRequest
-	1, // 1: peer2peer.bootstrapNodeService.bootstrap:output_type -> peer2peer.bootstrapResponse
+	0, // 0: peer2peer.bootNodeService.bootstrap:input_type -> peer2peer.bootstrapRequest
+	1, // 1: peer2peer.bootNodeService.bootstrap:output_type -> peer2peer.bootstrapResponse
 	1, // [1:2] is the sub-list for method output_type
 	0, // [0:1] is the sub-list for method input_type
 	0, // [0:0] is the sub-list for extension type_name
@@ -215,72 +224,72 @@ var _ grpc.ClientConnInterface
 // is compatible with the grpc package it is being compiled against.
 const _ = grpc.SupportPackageIsVersion6
 
-// BootstrapNodeServiceClient is the client API for BootstrapNodeService service.
+// BootNodeServiceClient is the client API for BootNodeService service.
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://godoc.org/google.golang.org/grpc#ClientConn.NewStream.
-type BootstrapNodeServiceClient interface {
+type BootNodeServiceClient interface {
 	Bootstrap(ctx context.Context, in *BootstrapRequest, opts ...grpc.CallOption) (*BootstrapResponse, error)
 }
 
-type bootstrapNodeServiceClient struct {
+type bootNodeServiceClient struct {
 	cc grpc.ClientConnInterface
 }
 
-func NewBootstrapNodeServiceClient(cc grpc.ClientConnInterface) BootstrapNodeServiceClient {
-	return &bootstrapNodeServiceClient{cc}
+func NewBootNodeServiceClient(cc grpc.ClientConnInterface) BootNodeServiceClient {
+	return &bootNodeServiceClient{cc}
 }
 
-func (c *bootstrapNodeServiceClient) Bootstrap(ctx context.Context, in *BootstrapRequest, opts ...grpc.CallOption) (*BootstrapResponse, error) {
+func (c *bootNodeServiceClient) Bootstrap(ctx context.Context, in *BootstrapRequest, opts ...grpc.CallOption) (*BootstrapResponse, error) {
 	out := new(BootstrapResponse)
-	err := c.cc.Invoke(ctx, "/peer2peer.bootstrapNodeService/bootstrap", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/peer2peer.bootNodeService/bootstrap", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
 	return out, nil
 }
 
-// BootstrapNodeServiceServer is the server API for BootstrapNodeService service.
-type BootstrapNodeServiceServer interface {
+// BootNodeServiceServer is the server API for BootNodeService service.
+type BootNodeServiceServer interface {
 	Bootstrap(context.Context, *BootstrapRequest) (*BootstrapResponse, error)
 }
 
-// UnimplementedBootstrapNodeServiceServer can be embedded to have forward compatible implementations.
-type UnimplementedBootstrapNodeServiceServer struct {
+// UnimplementedBootNodeServiceServer can be embedded to have forward compatible implementations.
+type UnimplementedBootNodeServiceServer struct {
 }
 
-func (*UnimplementedBootstrapNodeServiceServer) Bootstrap(context.Context, *BootstrapRequest) (*BootstrapResponse, error) {
+func (*UnimplementedBootNodeServiceServer) Bootstrap(context.Context, *BootstrapRequest) (*BootstrapResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method Bootstrap not implemented")
 }
 
-func RegisterBootstrapNodeServiceServer(s *grpc.Server, srv BootstrapNodeServiceServer) {
-	s.RegisterService(&_BootstrapNodeService_serviceDesc, srv)
+func RegisterBootNodeServiceServer(s *grpc.Server, srv BootNodeServiceServer) {
+	s.RegisterService(&_BootNodeService_serviceDesc, srv)
 }
 
-func _BootstrapNodeService_Bootstrap_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+func _BootNodeService_Bootstrap_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(BootstrapRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(BootstrapNodeServiceServer).Bootstrap(ctx, in)
+		return srv.(BootNodeServiceServer).Bootstrap(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/peer2peer.bootstrapNodeService/Bootstrap",
+		FullMethod: "/peer2peer.bootNodeService/Bootstrap",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(BootstrapNodeServiceServer).Bootstrap(ctx, req.(*BootstrapRequest))
+		return srv.(BootNodeServiceServer).Bootstrap(ctx, req.(*BootstrapRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
-var _BootstrapNodeService_serviceDesc = grpc.ServiceDesc{
-	ServiceName: "peer2peer.bootstrapNodeService",
-	HandlerType: (*BootstrapNodeServiceServer)(nil),
+var _BootNodeService_serviceDesc = grpc.ServiceDesc{
+	ServiceName: "peer2peer.bootNodeService",
+	HandlerType: (*BootNodeServiceServer)(nil),
 	Methods: []grpc.MethodDesc{
 		{
 			MethodName: "bootstrap",
-			Handler:    _BootstrapNodeService_Bootstrap_Handler,
+			Handler:    _BootNodeService_Bootstrap_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

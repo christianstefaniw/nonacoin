@@ -126,91 +126,6 @@ func (x *SyncChainResponse) GetNodes() string {
 	return ""
 }
 
-type BootstrapRequest struct {
-	state         protoimpl.MessageState
-	sizeCache     protoimpl.SizeCache
-	unknownFields protoimpl.UnknownFields
-}
-
-func (x *BootstrapRequest) Reset() {
-	*x = BootstrapRequest{}
-	if protoimpl.UnsafeEnabled {
-		mi := &file_peer2peer_proto_msgTypes[2]
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		ms.StoreMessageInfo(mi)
-	}
-}
-
-func (x *BootstrapRequest) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*BootstrapRequest) ProtoMessage() {}
-
-func (x *BootstrapRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_peer2peer_proto_msgTypes[2]
-	if protoimpl.UnsafeEnabled && x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use BootstrapRequest.ProtoReflect.Descriptor instead.
-func (*BootstrapRequest) Descriptor() ([]byte, []int) {
-	return file_peer2peer_proto_rawDescGZIP(), []int{2}
-}
-
-type BootstrapResponse struct {
-	state         protoimpl.MessageState
-	sizeCache     protoimpl.SizeCache
-	unknownFields protoimpl.UnknownFields
-
-	RoutingArray []string `protobuf:"bytes,1,rep,name=routingArray,proto3" json:"routingArray,omitempty"`
-}
-
-func (x *BootstrapResponse) Reset() {
-	*x = BootstrapResponse{}
-	if protoimpl.UnsafeEnabled {
-		mi := &file_peer2peer_proto_msgTypes[3]
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		ms.StoreMessageInfo(mi)
-	}
-}
-
-func (x *BootstrapResponse) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*BootstrapResponse) ProtoMessage() {}
-
-func (x *BootstrapResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_peer2peer_proto_msgTypes[3]
-	if protoimpl.UnsafeEnabled && x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use BootstrapResponse.ProtoReflect.Descriptor instead.
-func (*BootstrapResponse) Descriptor() ([]byte, []int) {
-	return file_peer2peer_proto_rawDescGZIP(), []int{3}
-}
-
-func (x *BootstrapResponse) GetRoutingArray() []string {
-	if x != nil {
-		return x.RoutingArray
-	}
-	return nil
-}
-
 var File_peer2peer_proto protoreflect.FileDescriptor
 
 var file_peer2peer_proto_rawDesc = []byte{
@@ -222,24 +137,14 @@ var file_peer2peer_proto_rawDesc = []byte{
 	0x6e, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x12, 0x14, 0x0a, 0x05, 0x63, 0x68, 0x61,
 	0x69, 0x6e, 0x18, 0x01, 0x20, 0x01, 0x28, 0x09, 0x52, 0x05, 0x63, 0x68, 0x61, 0x69, 0x6e, 0x12,
 	0x14, 0x0a, 0x05, 0x6e, 0x6f, 0x64, 0x65, 0x73, 0x18, 0x02, 0x20, 0x01, 0x28, 0x09, 0x52, 0x05,
-	0x6e, 0x6f, 0x64, 0x65, 0x73, 0x22, 0x12, 0x0a, 0x10, 0x62, 0x6f, 0x6f, 0x74, 0x73, 0x74, 0x72,
-	0x61, 0x70, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x22, 0x37, 0x0a, 0x11, 0x62, 0x6f, 0x6f,
-	0x74, 0x73, 0x74, 0x72, 0x61, 0x70, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x12, 0x22,
-	0x0a, 0x0c, 0x72, 0x6f, 0x75, 0x74, 0x69, 0x6e, 0x67, 0x41, 0x72, 0x72, 0x61, 0x79, 0x18, 0x01,
-	0x20, 0x03, 0x28, 0x09, 0x52, 0x0c, 0x72, 0x6f, 0x75, 0x74, 0x69, 0x6e, 0x67, 0x41, 0x72, 0x72,
-	0x61, 0x79, 0x32, 0xa7, 0x01, 0x0a, 0x11, 0x70, 0x65, 0x65, 0x72, 0x54, 0x6f, 0x50, 0x65, 0x65,
-	0x72, 0x53, 0x65, 0x72, 0x76, 0x69, 0x63, 0x65, 0x12, 0x48, 0x0a, 0x09, 0x73, 0x79, 0x6e, 0x63,
-	0x43, 0x68, 0x61, 0x69, 0x6e, 0x12, 0x1b, 0x2e, 0x70, 0x65, 0x65, 0x72, 0x32, 0x70, 0x65, 0x65,
-	0x72, 0x2e, 0x73, 0x79, 0x6e, 0x63, 0x43, 0x68, 0x61, 0x69, 0x6e, 0x52, 0x65, 0x71, 0x75, 0x65,
-	0x73, 0x74, 0x1a, 0x1c, 0x2e, 0x70, 0x65, 0x65, 0x72, 0x32, 0x70, 0x65, 0x65, 0x72, 0x2e, 0x73,
-	0x79, 0x6e, 0x63, 0x43, 0x68, 0x61, 0x69, 0x6e, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65,
-	0x22, 0x00, 0x12, 0x48, 0x0a, 0x09, 0x62, 0x6f, 0x6f, 0x74, 0x73, 0x74, 0x72, 0x61, 0x70, 0x12,
-	0x1b, 0x2e, 0x70, 0x65, 0x65, 0x72, 0x32, 0x70, 0x65, 0x65, 0x72, 0x2e, 0x62, 0x6f, 0x6f, 0x74,
-	0x73, 0x74, 0x72, 0x61, 0x70, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x1a, 0x1c, 0x2e, 0x70,
-	0x65, 0x65, 0x72, 0x32, 0x70, 0x65, 0x65, 0x72, 0x2e, 0x62, 0x6f, 0x6f, 0x74, 0x73, 0x74, 0x72,
-	0x61, 0x70, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x22, 0x00, 0x42, 0x0e, 0x5a, 0x0c,
-	0x2f, 0x70, 0x65, 0x65, 0x72, 0x32, 0x70, 0x65, 0x65, 0x72, 0x70, 0x62, 0x62, 0x06, 0x70, 0x72,
-	0x6f, 0x74, 0x6f, 0x33,
+	0x6e, 0x6f, 0x64, 0x65, 0x73, 0x32, 0x5d, 0x0a, 0x11, 0x70, 0x65, 0x65, 0x72, 0x54, 0x6f, 0x50,
+	0x65, 0x65, 0x72, 0x53, 0x65, 0x72, 0x76, 0x69, 0x63, 0x65, 0x12, 0x48, 0x0a, 0x09, 0x73, 0x79,
+	0x6e, 0x63, 0x43, 0x68, 0x61, 0x69, 0x6e, 0x12, 0x1b, 0x2e, 0x70, 0x65, 0x65, 0x72, 0x32, 0x70,
+	0x65, 0x65, 0x72, 0x2e, 0x73, 0x79, 0x6e, 0x63, 0x43, 0x68, 0x61, 0x69, 0x6e, 0x52, 0x65, 0x71,
+	0x75, 0x65, 0x73, 0x74, 0x1a, 0x1c, 0x2e, 0x70, 0x65, 0x65, 0x72, 0x32, 0x70, 0x65, 0x65, 0x72,
+	0x2e, 0x73, 0x79, 0x6e, 0x63, 0x43, 0x68, 0x61, 0x69, 0x6e, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e,
+	0x73, 0x65, 0x22, 0x00, 0x42, 0x0e, 0x5a, 0x0c, 0x2f, 0x70, 0x65, 0x65, 0x72, 0x32, 0x70, 0x65,
+	0x65, 0x72, 0x70, 0x62, 0x62, 0x06, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x33,
 }
 
 var (
@@ -254,20 +159,16 @@ func file_peer2peer_proto_rawDescGZIP() []byte {
 	return file_peer2peer_proto_rawDescData
 }
 
-var file_peer2peer_proto_msgTypes = make([]protoimpl.MessageInfo, 4)
+var file_peer2peer_proto_msgTypes = make([]protoimpl.MessageInfo, 2)
 var file_peer2peer_proto_goTypes = []interface{}{
 	(*SyncChainRequest)(nil),  // 0: peer2peer.syncChainRequest
 	(*SyncChainResponse)(nil), // 1: peer2peer.syncChainResponse
-	(*BootstrapRequest)(nil),  // 2: peer2peer.bootstrapRequest
-	(*BootstrapResponse)(nil), // 3: peer2peer.bootstrapResponse
 }
 var file_peer2peer_proto_depIdxs = []int32{
 	0, // 0: peer2peer.peerToPeerService.syncChain:input_type -> peer2peer.syncChainRequest
-	2, // 1: peer2peer.peerToPeerService.bootstrap:input_type -> peer2peer.bootstrapRequest
-	1, // 2: peer2peer.peerToPeerService.syncChain:output_type -> peer2peer.syncChainResponse
-	3, // 3: peer2peer.peerToPeerService.bootstrap:output_type -> peer2peer.bootstrapResponse
-	2, // [2:4] is the sub-list for method output_type
-	0, // [0:2] is the sub-list for method input_type
+	1, // 1: peer2peer.peerToPeerService.syncChain:output_type -> peer2peer.syncChainResponse
+	1, // [1:2] is the sub-list for method output_type
+	0, // [0:1] is the sub-list for method input_type
 	0, // [0:0] is the sub-list for extension type_name
 	0, // [0:0] is the sub-list for extension extendee
 	0, // [0:0] is the sub-list for field type_name
@@ -303,30 +204,6 @@ func file_peer2peer_proto_init() {
 				return nil
 			}
 		}
-		file_peer2peer_proto_msgTypes[2].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*BootstrapRequest); i {
-			case 0:
-				return &v.state
-			case 1:
-				return &v.sizeCache
-			case 2:
-				return &v.unknownFields
-			default:
-				return nil
-			}
-		}
-		file_peer2peer_proto_msgTypes[3].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*BootstrapResponse); i {
-			case 0:
-				return &v.state
-			case 1:
-				return &v.sizeCache
-			case 2:
-				return &v.unknownFields
-			default:
-				return nil
-			}
-		}
 	}
 	type x struct{}
 	out := protoimpl.TypeBuilder{
@@ -334,7 +211,7 @@ func file_peer2peer_proto_init() {
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: file_peer2peer_proto_rawDesc,
 			NumEnums:      0,
-			NumMessages:   4,
+			NumMessages:   2,
 			NumExtensions: 0,
 			NumServices:   1,
 		},
@@ -361,7 +238,6 @@ const _ = grpc.SupportPackageIsVersion6
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://godoc.org/google.golang.org/grpc#ClientConn.NewStream.
 type PeerToPeerServiceClient interface {
 	SyncChain(ctx context.Context, in *SyncChainRequest, opts ...grpc.CallOption) (*SyncChainResponse, error)
-	Bootstrap(ctx context.Context, in *BootstrapRequest, opts ...grpc.CallOption) (*BootstrapResponse, error)
 }
 
 type peerToPeerServiceClient struct {
@@ -381,19 +257,9 @@ func (c *peerToPeerServiceClient) SyncChain(ctx context.Context, in *SyncChainRe
 	return out, nil
 }
 
-func (c *peerToPeerServiceClient) Bootstrap(ctx context.Context, in *BootstrapRequest, opts ...grpc.CallOption) (*BootstrapResponse, error) {
-	out := new(BootstrapResponse)
-	err := c.cc.Invoke(ctx, "/peer2peer.peerToPeerService/bootstrap", in, out, opts...)
-	if err != nil {
-		return nil, err
-	}
-	return out, nil
-}
-
 // PeerToPeerServiceServer is the server API for PeerToPeerService service.
 type PeerToPeerServiceServer interface {
 	SyncChain(context.Context, *SyncChainRequest) (*SyncChainResponse, error)
-	Bootstrap(context.Context, *BootstrapRequest) (*BootstrapResponse, error)
 }
 
 // UnimplementedPeerToPeerServiceServer can be embedded to have forward compatible implementations.
@@ -402,9 +268,6 @@ type UnimplementedPeerToPeerServiceServer struct {
 
 func (*UnimplementedPeerToPeerServiceServer) SyncChain(context.Context, *SyncChainRequest) (*SyncChainResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method SyncChain not implemented")
-}
-func (*UnimplementedPeerToPeerServiceServer) Bootstrap(context.Context, *BootstrapRequest) (*BootstrapResponse, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method Bootstrap not implemented")
 }
 
 func RegisterPeerToPeerServiceServer(s *grpc.Server, srv PeerToPeerServiceServer) {
@@ -429,24 +292,6 @@ func _PeerToPeerService_SyncChain_Handler(srv interface{}, ctx context.Context, 
 	return interceptor(ctx, in, info, handler)
 }
 
-func _PeerToPeerService_Bootstrap_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(BootstrapRequest)
-	if err := dec(in); err != nil {
-		return nil, err
-	}
-	if interceptor == nil {
-		return srv.(PeerToPeerServiceServer).Bootstrap(ctx, in)
-	}
-	info := &grpc.UnaryServerInfo{
-		Server:     srv,
-		FullMethod: "/peer2peer.peerToPeerService/Bootstrap",
-	}
-	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(PeerToPeerServiceServer).Bootstrap(ctx, req.(*BootstrapRequest))
-	}
-	return interceptor(ctx, in, info, handler)
-}
-
 var _PeerToPeerService_serviceDesc = grpc.ServiceDesc{
 	ServiceName: "peer2peer.peerToPeerService",
 	HandlerType: (*PeerToPeerServiceServer)(nil),
@@ -454,10 +299,6 @@ var _PeerToPeerService_serviceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "syncChain",
 			Handler:    _PeerToPeerService_SyncChain_Handler,
-		},
-		{
-			MethodName: "bootstrap",
-			Handler:    _PeerToPeerService_Bootstrap_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

@@ -1,28 +1,43 @@
 package peer2peer
 
-type RoutingArray []string
+type RoutingTable map[IP]bool
 
-// holds addresses of all peers
+// this is the first node on the network
+// it implements functionality such as bootstrapping
+// whever a new node wants to join the network, it must call the
+// bootstrapping functionality
 type BootNode struct {
 	server       *peer2PeerServer
-	routingArray RoutingArray
+	routingTable RoutingTable
 }
 
-func newBootNode(addr string) *BootNode {
+func NewBootNode(addr string) *BootNode {
 	node := new(BootNode)
-	node.routingArray = NewRoutingArray()
+	node.routingTable = NewRoutingTable()
 	node.server = newPeer2PeerServer(addr, node)
 	return node
 }
 
+func (b *BootNode) bootstrap(p *PeerNode) RoutingTable {
+	_, ok := b.routingTable[p.server.addr]
+	if ok {
+		return b.routingTable
+	}
+
+	b.routingTable[p.server.addr] = true
+	p.server.routingTable = b.routingTable
+
+	return b.routingTable
+}
+
 func (n *BootNode) StartServer() {
-	go n.server.start()
+	n.server.start()
 }
 
 func (n *BootNode) WhichNode() int {
 	return bootNode
 }
 
-func NewRoutingArray() RoutingArray {
-	return make(RoutingArray, 0)
+func NewRoutingTable() RoutingTable {
+	return make(RoutingTable)
 }

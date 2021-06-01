@@ -1,12 +1,18 @@
 package account
 
+import "nonacoin/src/wallet"
+
 // manages transactions
 type Account struct {
-	walletBalances map[string]float64
+	wlt *wallet.Wallet
 }
 
-func createAccount() *Account {
+func NewAccount(wlt *wallet.Wallet) *Account {
 	newAccount := new(Account)
-	newAccount.walletBalances = make(map[string]float64)
+	newAccount.wlt = wlt
 	return newAccount
+}
+
+func (a *Account) GetWallet() *wallet.Wallet {
+	return a.wlt
 }

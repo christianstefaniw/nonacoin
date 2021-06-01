@@ -3,6 +3,7 @@ package peer2peer
 import (
 	"log"
 	"net"
+	"nonacoin/src/nonacoin"
 	"nonacoin/src/peer2peer/bootnodepb"
 	"nonacoin/src/peer2peer/peer2peerpb"
 
@@ -13,19 +14,29 @@ type IP string
 
 type ConnectedPeersTable map[IP]peer2peerpb.PeerToPeerServiceClient
 
+type NewPeer struct{}
+
 type peer2PeerServer struct {
-	routingArray RoutingArray
+	routingTable RoutingTable
 	peers        ConnectedPeersTable
-	addr         string
+	addr         IP
 	node         Node
+}
+
+func (ip IP) String() string {
+	return string(ip)
+}
+
+func (ip IP) IsBootstrapConn() bool {
+	return ip.String() == nonacoin.BOOT_NODE_ADDR
 }
 
 func newPeer2PeerServer(addr string, node Node) *peer2PeerServer {
 	return &peer2PeerServer{
 		node:         node,
-		addr:         addr,
+		addr:         IP(addr),
 		peers:        NewConnectedPeersArray(),
-		routingArray: NewRoutingArray(),
+		routingTable: NewRoutingTable(),
 	}
 }
 
@@ -34,12 +45,11 @@ func NewConnectedPeersArray() ConnectedPeersTable {
 }
 
 func (s *peer2PeerServer) start() {
-	s.routingArray = s.FindPeers()
 	go s.startListening()
 }
 
 func (s *peer2PeerServer) startListening() {
-	lis, err := net.Listen("tcp", s.addr)
+	lis, err := net.Listen("tcp", s.addr.String())
 	if err != nil {
 		log.Fatalf("failed to listen: %v", err)
 	}
@@ -50,7 +60,7 @@ func (s *peer2PeerServer) startListening() {
 	case peerNode:
 		peer2peerpb.RegisterPeerToPeerServiceServer(grpcServer, s.node.(peer2peerpb.PeerToPeerServiceServer))
 	case bootNode:
-		bootnodepb.RegisterBootstrapNodeServiceServer(grpcServer, s.node.(bootnodepb.BootstrapNodeServiceServer))
+		bootnodepb.RegisterBootNodeServiceServer(grpcServer, s.node.(bootnodepb.BootNodeServiceServer))
 	}
 
 	if err := grpcServer.Serve(lis); err != nil {
@@ -58,20 +68,24 @@ func (s *peer2PeerServer) startListening() {
 	}
 }
 
-func (s *peer2PeerServer) FindPeers() RoutingArray {
+func (s *peer2PeerServer) FindPeers() RoutingTable {
 	// connect to closest peers
 	// use geographical locations
 	// if location to attempted connection is greater than `x`, do not connect
-	return make(RoutingArray, 0)
+	return make(RoutingTable)
 }
 
-func (s *peer2PeerServer) setupClient(ip IP, addr string) (*grpc.ClientConn, peer2peerpb.PeerToPeerServiceClient) {
-	conn, err := grpc.Dial(addr, grpc.WithInsecure())
+func (s *peer2PeerServer) setupClient(addr IP) interface{} {
+	conn, err := grpc.Dial(addr.String(), grpc.WithInsecure())
 	if err != nil {
 		log.Printf("unable to conect to %s: %v", addr, err)
 	}
 
-	s.peers[ip] = peer2peerpb.NewPeerToPeerServiceClient(conn)
+	if addr.IsBootstrapConn() {
+		return bootnodepb.NewBootNodeServiceClient(conn)
+	}
 
-	return conn, s.peers[ip]
+	s.peers[addr] = peer2peerpb.NewPeerToPeerServiceClient(conn)
+
+	return s.peers[addr]
 }

@@ -13,10 +13,10 @@ type Blockchain struct {
 	chain      []*blocks.Block
 }
 
-func createBlockchain() *Blockchain {
+func NewBlockchain(acc *account.Account) *Blockchain {
 	bc := new(Blockchain)
 	bc.chain = make([]*blocks.Block, 0)
-	bc.account = account.GetAccountInstance()
+	bc.account = acc
 
 	bc.chain = append(bc.chain, bc.createGenesisBlock())
 	bc.difficulty = 2
