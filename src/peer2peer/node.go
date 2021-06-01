@@ -9,6 +9,11 @@ import (
 
 type NodeType int
 
+type Node interface {
+	peer2peerpb.PeerToPeerServiceServer
+	WhichNode() NodeType
+}
+
 const (
 	transThreshold          = 1
 	peerNode       NodeType = iota
@@ -16,7 +21,7 @@ const (
 )
 
 type PeerNode struct {
-	server          *peer2PeerServer
+	server          *Peer2PeerServer
 	transactionPool *transactions.TransactionPool
 	blockchain      *blockchain.Blockchain
 }
@@ -38,9 +43,9 @@ func (p *PeerNode) WhichNode() NodeType {
 }
 
 func (p *PeerNode) StartServer() {
-	p.server.start()
+	go p.server.start()
 }
 
-func (p *PeerNode) ConnectToClient(addr string) (peer2peerpb.PeerToPeerServiceClient, error) {
+func (p *PeerNode) ConnectToClient(addr string) (interface{}, error) {
 	return p.server.setupClient(addr)
 }

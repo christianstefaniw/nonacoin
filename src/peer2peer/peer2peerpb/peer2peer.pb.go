@@ -24,6 +24,279 @@ const (
 	_ = protoimpl.EnforceVersion(protoimpl.MaxVersion - 20)
 )
 
+type BootstrapRequest struct {
+	state         protoimpl.MessageState
+	sizeCache     protoimpl.SizeCache
+	unknownFields protoimpl.UnknownFields
+
+	Addr string `protobuf:"bytes,1,opt,name=addr,proto3" json:"addr,omitempty"`
+}
+
+func (x *BootstrapRequest) Reset() {
+	*x = BootstrapRequest{}
+	if protoimpl.UnsafeEnabled {
+		mi := &file_peer2peer_proto_msgTypes[0]
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		ms.StoreMessageInfo(mi)
+	}
+}
+
+func (x *BootstrapRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*BootstrapRequest) ProtoMessage() {}
+
+func (x *BootstrapRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_peer2peer_proto_msgTypes[0]
+	if protoimpl.UnsafeEnabled && x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use BootstrapRequest.ProtoReflect.Descriptor instead.
+func (*BootstrapRequest) Descriptor() ([]byte, []int) {
+	return file_peer2peer_proto_rawDescGZIP(), []int{0}
+}
+
+func (x *BootstrapRequest) GetAddr() string {
+	if x != nil {
+		return x.Addr
+	}
+	return ""
+}
+
+type BootstrapResponse struct {
+	state         protoimpl.MessageState
+	sizeCache     protoimpl.SizeCache
+	unknownFields protoimpl.UnknownFields
+
+	Success bool `protobuf:"varint,1,opt,name=success,proto3" json:"success,omitempty"`
+}
+
+func (x *BootstrapResponse) Reset() {
+	*x = BootstrapResponse{}
+	if protoimpl.UnsafeEnabled {
+		mi := &file_peer2peer_proto_msgTypes[1]
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		ms.StoreMessageInfo(mi)
+	}
+}
+
+func (x *BootstrapResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*BootstrapResponse) ProtoMessage() {}
+
+func (x *BootstrapResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_peer2peer_proto_msgTypes[1]
+	if protoimpl.UnsafeEnabled && x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use BootstrapResponse.ProtoReflect.Descriptor instead.
+func (*BootstrapResponse) Descriptor() ([]byte, []int) {
+	return file_peer2peer_proto_rawDescGZIP(), []int{1}
+}
+
+func (x *BootstrapResponse) GetSuccess() bool {
+	if x != nil {
+		return x.Success
+	}
+	return false
+}
+
+type RetrieveRoutingTableRequest struct {
+	state         protoimpl.MessageState
+	sizeCache     protoimpl.SizeCache
+	unknownFields protoimpl.UnknownFields
+}
+
+func (x *RetrieveRoutingTableRequest) Reset() {
+	*x = RetrieveRoutingTableRequest{}
+	if protoimpl.UnsafeEnabled {
+		mi := &file_peer2peer_proto_msgTypes[2]
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		ms.StoreMessageInfo(mi)
+	}
+}
+
+func (x *RetrieveRoutingTableRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*RetrieveRoutingTableRequest) ProtoMessage() {}
+
+func (x *RetrieveRoutingTableRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_peer2peer_proto_msgTypes[2]
+	if protoimpl.UnsafeEnabled && x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use RetrieveRoutingTableRequest.ProtoReflect.Descriptor instead.
+func (*RetrieveRoutingTableRequest) Descriptor() ([]byte, []int) {
+	return file_peer2peer_proto_rawDescGZIP(), []int{2}
+}
+
+type RetrieveRoutingTableResponse struct {
+	state         protoimpl.MessageState
+	sizeCache     protoimpl.SizeCache
+	unknownFields protoimpl.UnknownFields
+
+	Table map[string]bool `protobuf:"bytes,1,rep,name=table,proto3" json:"table,omitempty" protobuf_key:"bytes,1,opt,name=key,proto3" protobuf_val:"varint,2,opt,name=value,proto3"`
+}
+
+func (x *RetrieveRoutingTableResponse) Reset() {
+	*x = RetrieveRoutingTableResponse{}
+	if protoimpl.UnsafeEnabled {
+		mi := &file_peer2peer_proto_msgTypes[3]
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		ms.StoreMessageInfo(mi)
+	}
+}
+
+func (x *RetrieveRoutingTableResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*RetrieveRoutingTableResponse) ProtoMessage() {}
+
+func (x *RetrieveRoutingTableResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_peer2peer_proto_msgTypes[3]
+	if protoimpl.UnsafeEnabled && x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use RetrieveRoutingTableResponse.ProtoReflect.Descriptor instead.
+func (*RetrieveRoutingTableResponse) Descriptor() ([]byte, []int) {
+	return file_peer2peer_proto_rawDescGZIP(), []int{3}
+}
+
+func (x *RetrieveRoutingTableResponse) GetTable() map[string]bool {
+	if x != nil {
+		return x.Table
+	}
+	return nil
+}
+
+type PropagateNewConnectionRequest struct {
+	state         protoimpl.MessageState
+	sizeCache     protoimpl.SizeCache
+	unknownFields protoimpl.UnknownFields
+
+	Addr string `protobuf:"bytes,1,opt,name=addr,proto3" json:"addr,omitempty"`
+}
+
+func (x *PropagateNewConnectionRequest) Reset() {
+	*x = PropagateNewConnectionRequest{}
+	if protoimpl.UnsafeEnabled {
+		mi := &file_peer2peer_proto_msgTypes[4]
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		ms.StoreMessageInfo(mi)
+	}
+}
+
+func (x *PropagateNewConnectionRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*PropagateNewConnectionRequest) ProtoMessage() {}
+
+func (x *PropagateNewConnectionRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_peer2peer_proto_msgTypes[4]
+	if protoimpl.UnsafeEnabled && x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use PropagateNewConnectionRequest.ProtoReflect.Descriptor instead.
+func (*PropagateNewConnectionRequest) Descriptor() ([]byte, []int) {
+	return file_peer2peer_proto_rawDescGZIP(), []int{4}
+}
+
+func (x *PropagateNewConnectionRequest) GetAddr() string {
+	if x != nil {
+		return x.Addr
+	}
+	return ""
+}
+
+type PropagateNewConnectionResponse struct {
+	state         protoimpl.MessageState
+	sizeCache     protoimpl.SizeCache
+	unknownFields protoimpl.UnknownFields
+
+	Success bool `protobuf:"varint,1,opt,name=success,proto3" json:"success,omitempty"`
+}
+
+func (x *PropagateNewConnectionResponse) Reset() {
+	*x = PropagateNewConnectionResponse{}
+	if protoimpl.UnsafeEnabled {
+		mi := &file_peer2peer_proto_msgTypes[5]
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		ms.StoreMessageInfo(mi)
+	}
+}
+
+func (x *PropagateNewConnectionResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*PropagateNewConnectionResponse) ProtoMessage() {}
+
+func (x *PropagateNewConnectionResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_peer2peer_proto_msgTypes[5]
+	if protoimpl.UnsafeEnabled && x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use PropagateNewConnectionResponse.ProtoReflect.Descriptor instead.
+func (*PropagateNewConnectionResponse) Descriptor() ([]byte, []int) {
+	return file_peer2peer_proto_rawDescGZIP(), []int{5}
+}
+
+func (x *PropagateNewConnectionResponse) GetSuccess() bool {
+	if x != nil {
+		return x.Success
+	}
+	return false
+}
+
 type SyncChainRequest struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
@@ -35,7 +308,7 @@ type SyncChainRequest struct {
 func (x *SyncChainRequest) Reset() {
 	*x = SyncChainRequest{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_peer2peer_proto_msgTypes[0]
+		mi := &file_peer2peer_proto_msgTypes[6]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -48,7 +321,7 @@ func (x *SyncChainRequest) String() string {
 func (*SyncChainRequest) ProtoMessage() {}
 
 func (x *SyncChainRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_peer2peer_proto_msgTypes[0]
+	mi := &file_peer2peer_proto_msgTypes[6]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -61,7 +334,7 @@ func (x *SyncChainRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use SyncChainRequest.ProtoReflect.Descriptor instead.
 func (*SyncChainRequest) Descriptor() ([]byte, []int) {
-	return file_peer2peer_proto_rawDescGZIP(), []int{0}
+	return file_peer2peer_proto_rawDescGZIP(), []int{6}
 }
 
 func (x *SyncChainRequest) GetPeer() string {
@@ -83,7 +356,7 @@ type SyncChainResponse struct {
 func (x *SyncChainResponse) Reset() {
 	*x = SyncChainResponse{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_peer2peer_proto_msgTypes[1]
+		mi := &file_peer2peer_proto_msgTypes[7]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -96,7 +369,7 @@ func (x *SyncChainResponse) String() string {
 func (*SyncChainResponse) ProtoMessage() {}
 
 func (x *SyncChainResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_peer2peer_proto_msgTypes[1]
+	mi := &file_peer2peer_proto_msgTypes[7]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -109,7 +382,7 @@ func (x *SyncChainResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use SyncChainResponse.ProtoReflect.Descriptor instead.
 func (*SyncChainResponse) Descriptor() ([]byte, []int) {
-	return file_peer2peer_proto_rawDescGZIP(), []int{1}
+	return file_peer2peer_proto_rawDescGZIP(), []int{7}
 }
 
 func (x *SyncChainResponse) GetChain() string {
@@ -131,13 +404,62 @@ var File_peer2peer_proto protoreflect.FileDescriptor
 var file_peer2peer_proto_rawDesc = []byte{
 	0x0a, 0x0f, 0x70, 0x65, 0x65, 0x72, 0x32, 0x70, 0x65, 0x65, 0x72, 0x2e, 0x70, 0x72, 0x6f, 0x74,
 	0x6f, 0x12, 0x09, 0x70, 0x65, 0x65, 0x72, 0x32, 0x70, 0x65, 0x65, 0x72, 0x22, 0x26, 0x0a, 0x10,
-	0x73, 0x79, 0x6e, 0x63, 0x43, 0x68, 0x61, 0x69, 0x6e, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74,
-	0x12, 0x12, 0x0a, 0x04, 0x70, 0x65, 0x65, 0x72, 0x18, 0x01, 0x20, 0x01, 0x28, 0x09, 0x52, 0x04,
-	0x70, 0x65, 0x65, 0x72, 0x22, 0x3f, 0x0a, 0x11, 0x73, 0x79, 0x6e, 0x63, 0x43, 0x68, 0x61, 0x69,
-	0x6e, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x12, 0x14, 0x0a, 0x05, 0x63, 0x68, 0x61,
-	0x69, 0x6e, 0x18, 0x01, 0x20, 0x01, 0x28, 0x09, 0x52, 0x05, 0x63, 0x68, 0x61, 0x69, 0x6e, 0x12,
-	0x14, 0x0a, 0x05, 0x6e, 0x6f, 0x64, 0x65, 0x73, 0x18, 0x02, 0x20, 0x01, 0x28, 0x09, 0x52, 0x05,
-	0x6e, 0x6f, 0x64, 0x65, 0x73, 0x32, 0x5d, 0x0a, 0x11, 0x70, 0x65, 0x65, 0x72, 0x54, 0x6f, 0x50,
+	0x62, 0x6f, 0x6f, 0x74, 0x73, 0x74, 0x72, 0x61, 0x70, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74,
+	0x12, 0x12, 0x0a, 0x04, 0x61, 0x64, 0x64, 0x72, 0x18, 0x01, 0x20, 0x01, 0x28, 0x09, 0x52, 0x04,
+	0x61, 0x64, 0x64, 0x72, 0x22, 0x2d, 0x0a, 0x11, 0x62, 0x6f, 0x6f, 0x74, 0x73, 0x74, 0x72, 0x61,
+	0x70, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x12, 0x18, 0x0a, 0x07, 0x73, 0x75, 0x63,
+	0x63, 0x65, 0x73, 0x73, 0x18, 0x01, 0x20, 0x01, 0x28, 0x08, 0x52, 0x07, 0x73, 0x75, 0x63, 0x63,
+	0x65, 0x73, 0x73, 0x22, 0x1d, 0x0a, 0x1b, 0x72, 0x65, 0x74, 0x72, 0x69, 0x65, 0x76, 0x65, 0x52,
+	0x6f, 0x75, 0x74, 0x69, 0x6e, 0x67, 0x54, 0x61, 0x62, 0x6c, 0x65, 0x52, 0x65, 0x71, 0x75, 0x65,
+	0x73, 0x74, 0x22, 0xa2, 0x01, 0x0a, 0x1c, 0x72, 0x65, 0x74, 0x72, 0x69, 0x65, 0x76, 0x65, 0x52,
+	0x6f, 0x75, 0x74, 0x69, 0x6e, 0x67, 0x54, 0x61, 0x62, 0x6c, 0x65, 0x52, 0x65, 0x73, 0x70, 0x6f,
+	0x6e, 0x73, 0x65, 0x12, 0x48, 0x0a, 0x05, 0x74, 0x61, 0x62, 0x6c, 0x65, 0x18, 0x01, 0x20, 0x03,
+	0x28, 0x0b, 0x32, 0x32, 0x2e, 0x70, 0x65, 0x65, 0x72, 0x32, 0x70, 0x65, 0x65, 0x72, 0x2e, 0x72,
+	0x65, 0x74, 0x72, 0x69, 0x65, 0x76, 0x65, 0x52, 0x6f, 0x75, 0x74, 0x69, 0x6e, 0x67, 0x54, 0x61,
+	0x62, 0x6c, 0x65, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x2e, 0x54, 0x61, 0x62, 0x6c,
+	0x65, 0x45, 0x6e, 0x74, 0x72, 0x79, 0x52, 0x05, 0x74, 0x61, 0x62, 0x6c, 0x65, 0x1a, 0x38, 0x0a,
+	0x0a, 0x54, 0x61, 0x62, 0x6c, 0x65, 0x45, 0x6e, 0x74, 0x72, 0x79, 0x12, 0x10, 0x0a, 0x03, 0x6b,
+	0x65, 0x79, 0x18, 0x01, 0x20, 0x01, 0x28, 0x09, 0x52, 0x03, 0x6b, 0x65, 0x79, 0x12, 0x14, 0x0a,
+	0x05, 0x76, 0x61, 0x6c, 0x75, 0x65, 0x18, 0x02, 0x20, 0x01, 0x28, 0x08, 0x52, 0x05, 0x76, 0x61,
+	0x6c, 0x75, 0x65, 0x3a, 0x02, 0x38, 0x01, 0x22, 0x33, 0x0a, 0x1d, 0x70, 0x72, 0x6f, 0x70, 0x61,
+	0x67, 0x61, 0x74, 0x65, 0x4e, 0x65, 0x77, 0x43, 0x6f, 0x6e, 0x6e, 0x65, 0x63, 0x74, 0x69, 0x6f,
+	0x6e, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x12, 0x12, 0x0a, 0x04, 0x61, 0x64, 0x64, 0x72,
+	0x18, 0x01, 0x20, 0x01, 0x28, 0x09, 0x52, 0x04, 0x61, 0x64, 0x64, 0x72, 0x22, 0x3a, 0x0a, 0x1e,
+	0x70, 0x72, 0x6f, 0x70, 0x61, 0x67, 0x61, 0x74, 0x65, 0x4e, 0x65, 0x77, 0x43, 0x6f, 0x6e, 0x6e,
+	0x65, 0x63, 0x74, 0x69, 0x6f, 0x6e, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x12, 0x18,
+	0x0a, 0x07, 0x73, 0x75, 0x63, 0x63, 0x65, 0x73, 0x73, 0x18, 0x01, 0x20, 0x01, 0x28, 0x08, 0x52,
+	0x07, 0x73, 0x75, 0x63, 0x63, 0x65, 0x73, 0x73, 0x22, 0x26, 0x0a, 0x10, 0x73, 0x79, 0x6e, 0x63,
+	0x43, 0x68, 0x61, 0x69, 0x6e, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x12, 0x12, 0x0a, 0x04,
+	0x70, 0x65, 0x65, 0x72, 0x18, 0x01, 0x20, 0x01, 0x28, 0x09, 0x52, 0x04, 0x70, 0x65, 0x65, 0x72,
+	0x22, 0x3f, 0x0a, 0x11, 0x73, 0x79, 0x6e, 0x63, 0x43, 0x68, 0x61, 0x69, 0x6e, 0x52, 0x65, 0x73,
+	0x70, 0x6f, 0x6e, 0x73, 0x65, 0x12, 0x14, 0x0a, 0x05, 0x63, 0x68, 0x61, 0x69, 0x6e, 0x18, 0x01,
+	0x20, 0x01, 0x28, 0x09, 0x52, 0x05, 0x63, 0x68, 0x61, 0x69, 0x6e, 0x12, 0x14, 0x0a, 0x05, 0x6e,
+	0x6f, 0x64, 0x65, 0x73, 0x18, 0x02, 0x20, 0x01, 0x28, 0x09, 0x52, 0x05, 0x6e, 0x6f, 0x64, 0x65,
+	0x73, 0x32, 0x81, 0x03, 0x0a, 0x0f, 0x62, 0x6f, 0x6f, 0x74, 0x4e, 0x6f, 0x64, 0x65, 0x53, 0x65,
+	0x72, 0x76, 0x69, 0x63, 0x65, 0x12, 0x48, 0x0a, 0x09, 0x62, 0x6f, 0x6f, 0x74, 0x73, 0x74, 0x72,
+	0x61, 0x70, 0x12, 0x1b, 0x2e, 0x70, 0x65, 0x65, 0x72, 0x32, 0x70, 0x65, 0x65, 0x72, 0x2e, 0x62,
+	0x6f, 0x6f, 0x74, 0x73, 0x74, 0x72, 0x61, 0x70, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x1a,
+	0x1c, 0x2e, 0x70, 0x65, 0x65, 0x72, 0x32, 0x70, 0x65, 0x65, 0x72, 0x2e, 0x62, 0x6f, 0x6f, 0x74,
+	0x73, 0x74, 0x72, 0x61, 0x70, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x22, 0x00, 0x12,
+	0x69, 0x0a, 0x14, 0x72, 0x65, 0x74, 0x72, 0x69, 0x65, 0x76, 0x65, 0x52, 0x6f, 0x75, 0x74, 0x69,
+	0x6e, 0x67, 0x54, 0x61, 0x62, 0x6c, 0x65, 0x12, 0x26, 0x2e, 0x70, 0x65, 0x65, 0x72, 0x32, 0x70,
+	0x65, 0x65, 0x72, 0x2e, 0x72, 0x65, 0x74, 0x72, 0x69, 0x65, 0x76, 0x65, 0x52, 0x6f, 0x75, 0x74,
+	0x69, 0x6e, 0x67, 0x54, 0x61, 0x62, 0x6c, 0x65, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x1a,
+	0x27, 0x2e, 0x70, 0x65, 0x65, 0x72, 0x32, 0x70, 0x65, 0x65, 0x72, 0x2e, 0x72, 0x65, 0x74, 0x72,
+	0x69, 0x65, 0x76, 0x65, 0x52, 0x6f, 0x75, 0x74, 0x69, 0x6e, 0x67, 0x54, 0x61, 0x62, 0x6c, 0x65,
+	0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x22, 0x00, 0x12, 0x6f, 0x0a, 0x16, 0x70, 0x72,
+	0x6f, 0x70, 0x61, 0x67, 0x61, 0x74, 0x65, 0x4e, 0x65, 0x77, 0x43, 0x6f, 0x6e, 0x6e, 0x65, 0x63,
+	0x74, 0x69, 0x6f, 0x6e, 0x12, 0x28, 0x2e, 0x70, 0x65, 0x65, 0x72, 0x32, 0x70, 0x65, 0x65, 0x72,
+	0x2e, 0x70, 0x72, 0x6f, 0x70, 0x61, 0x67, 0x61, 0x74, 0x65, 0x4e, 0x65, 0x77, 0x43, 0x6f, 0x6e,
+	0x6e, 0x65, 0x63, 0x74, 0x69, 0x6f, 0x6e, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x1a, 0x29,
+	0x2e, 0x70, 0x65, 0x65, 0x72, 0x32, 0x70, 0x65, 0x65, 0x72, 0x2e, 0x70, 0x72, 0x6f, 0x70, 0x61,
+	0x67, 0x61, 0x74, 0x65, 0x4e, 0x65, 0x77, 0x43, 0x6f, 0x6e, 0x6e, 0x65, 0x63, 0x74, 0x69, 0x6f,
+	0x6e, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x22, 0x00, 0x12, 0x48, 0x0a, 0x09, 0x73,
+	0x79, 0x6e, 0x63, 0x43, 0x68, 0x61, 0x69, 0x6e, 0x12, 0x1b, 0x2e, 0x70, 0x65, 0x65, 0x72, 0x32,
+	0x70, 0x65, 0x65, 0x72, 0x2e, 0x73, 0x79, 0x6e, 0x63, 0x43, 0x68, 0x61, 0x69, 0x6e, 0x52, 0x65,
+	0x71, 0x75, 0x65, 0x73, 0x74, 0x1a, 0x1c, 0x2e, 0x70, 0x65, 0x65, 0x72, 0x32, 0x70, 0x65, 0x65,
+	0x72, 0x2e, 0x73, 0x79, 0x6e, 0x63, 0x43, 0x68, 0x61, 0x69, 0x6e, 0x52, 0x65, 0x73, 0x70, 0x6f,
+	0x6e, 0x73, 0x65, 0x22, 0x00, 0x32, 0x5d, 0x0a, 0x11, 0x70, 0x65, 0x65, 0x72, 0x54, 0x6f, 0x50,
 	0x65, 0x65, 0x72, 0x53, 0x65, 0x72, 0x76, 0x69, 0x63, 0x65, 0x12, 0x48, 0x0a, 0x09, 0x73, 0x79,
 	0x6e, 0x63, 0x43, 0x68, 0x61, 0x69, 0x6e, 0x12, 0x1b, 0x2e, 0x70, 0x65, 0x65, 0x72, 0x32, 0x70,
 	0x65, 0x65, 0x72, 0x2e, 0x73, 0x79, 0x6e, 0x63, 0x43, 0x68, 0x61, 0x69, 0x6e, 0x52, 0x65, 0x71,
@@ -159,19 +481,35 @@ func file_peer2peer_proto_rawDescGZIP() []byte {
 	return file_peer2peer_proto_rawDescData
 }
 
-var file_peer2peer_proto_msgTypes = make([]protoimpl.MessageInfo, 2)
+var file_peer2peer_proto_msgTypes = make([]protoimpl.MessageInfo, 9)
 var file_peer2peer_proto_goTypes = []interface{}{
-	(*SyncChainRequest)(nil),  // 0: peer2peer.syncChainRequest
-	(*SyncChainResponse)(nil), // 1: peer2peer.syncChainResponse
+	(*BootstrapRequest)(nil),               // 0: peer2peer.bootstrapRequest
+	(*BootstrapResponse)(nil),              // 1: peer2peer.bootstrapResponse
+	(*RetrieveRoutingTableRequest)(nil),    // 2: peer2peer.retrieveRoutingTableRequest
+	(*RetrieveRoutingTableResponse)(nil),   // 3: peer2peer.retrieveRoutingTableResponse
+	(*PropagateNewConnectionRequest)(nil),  // 4: peer2peer.propagateNewConnectionRequest
+	(*PropagateNewConnectionResponse)(nil), // 5: peer2peer.propagateNewConnectionResponse
+	(*SyncChainRequest)(nil),               // 6: peer2peer.syncChainRequest
+	(*SyncChainResponse)(nil),              // 7: peer2peer.syncChainResponse
+	nil,                                    // 8: peer2peer.retrieveRoutingTableResponse.TableEntry
 }
 var file_peer2peer_proto_depIdxs = []int32{
-	0, // 0: peer2peer.peerToPeerService.syncChain:input_type -> peer2peer.syncChainRequest
-	1, // 1: peer2peer.peerToPeerService.syncChain:output_type -> peer2peer.syncChainResponse
-	1, // [1:2] is the sub-list for method output_type
-	0, // [0:1] is the sub-list for method input_type
-	0, // [0:0] is the sub-list for extension type_name
-	0, // [0:0] is the sub-list for extension extendee
-	0, // [0:0] is the sub-list for field type_name
+	8, // 0: peer2peer.retrieveRoutingTableResponse.table:type_name -> peer2peer.retrieveRoutingTableResponse.TableEntry
+	0, // 1: peer2peer.bootNodeService.bootstrap:input_type -> peer2peer.bootstrapRequest
+	2, // 2: peer2peer.bootNodeService.retrieveRoutingTable:input_type -> peer2peer.retrieveRoutingTableRequest
+	4, // 3: peer2peer.bootNodeService.propagateNewConnection:input_type -> peer2peer.propagateNewConnectionRequest
+	6, // 4: peer2peer.bootNodeService.syncChain:input_type -> peer2peer.syncChainRequest
+	6, // 5: peer2peer.peerToPeerService.syncChain:input_type -> peer2peer.syncChainRequest
+	1, // 6: peer2peer.bootNodeService.bootstrap:output_type -> peer2peer.bootstrapResponse
+	3, // 7: peer2peer.bootNodeService.retrieveRoutingTable:output_type -> peer2peer.retrieveRoutingTableResponse
+	5, // 8: peer2peer.bootNodeService.propagateNewConnection:output_type -> peer2peer.propagateNewConnectionResponse
+	7, // 9: peer2peer.bootNodeService.syncChain:output_type -> peer2peer.syncChainResponse
+	7, // 10: peer2peer.peerToPeerService.syncChain:output_type -> peer2peer.syncChainResponse
+	6, // [6:11] is the sub-list for method output_type
+	1, // [1:6] is the sub-list for method input_type
+	1, // [1:1] is the sub-list for extension type_name
+	1, // [1:1] is the sub-list for extension extendee
+	0, // [0:1] is the sub-list for field type_name
 }
 
 func init() { file_peer2peer_proto_init() }
@@ -181,7 +519,7 @@ func file_peer2peer_proto_init() {
 	}
 	if !protoimpl.UnsafeEnabled {
 		file_peer2peer_proto_msgTypes[0].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*SyncChainRequest); i {
+			switch v := v.(*BootstrapRequest); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -193,6 +531,78 @@ func file_peer2peer_proto_init() {
 			}
 		}
 		file_peer2peer_proto_msgTypes[1].Exporter = func(v interface{}, i int) interface{} {
+			switch v := v.(*BootstrapResponse); i {
+			case 0:
+				return &v.state
+			case 1:
+				return &v.sizeCache
+			case 2:
+				return &v.unknownFields
+			default:
+				return nil
+			}
+		}
+		file_peer2peer_proto_msgTypes[2].Exporter = func(v interface{}, i int) interface{} {
+			switch v := v.(*RetrieveRoutingTableRequest); i {
+			case 0:
+				return &v.state
+			case 1:
+				return &v.sizeCache
+			case 2:
+				return &v.unknownFields
+			default:
+				return nil
+			}
+		}
+		file_peer2peer_proto_msgTypes[3].Exporter = func(v interface{}, i int) interface{} {
+			switch v := v.(*RetrieveRoutingTableResponse); i {
+			case 0:
+				return &v.state
+			case 1:
+				return &v.sizeCache
+			case 2:
+				return &v.unknownFields
+			default:
+				return nil
+			}
+		}
+		file_peer2peer_proto_msgTypes[4].Exporter = func(v interface{}, i int) interface{} {
+			switch v := v.(*PropagateNewConnectionRequest); i {
+			case 0:
+				return &v.state
+			case 1:
+				return &v.sizeCache
+			case 2:
+				return &v.unknownFields
+			default:
+				return nil
+			}
+		}
+		file_peer2peer_proto_msgTypes[5].Exporter = func(v interface{}, i int) interface{} {
+			switch v := v.(*PropagateNewConnectionResponse); i {
+			case 0:
+				return &v.state
+			case 1:
+				return &v.sizeCache
+			case 2:
+				return &v.unknownFields
+			default:
+				return nil
+			}
+		}
+		file_peer2peer_proto_msgTypes[6].Exporter = func(v interface{}, i int) interface{} {
+			switch v := v.(*SyncChainRequest); i {
+			case 0:
+				return &v.state
+			case 1:
+				return &v.sizeCache
+			case 2:
+				return &v.unknownFields
+			default:
+				return nil
+			}
+		}
+		file_peer2peer_proto_msgTypes[7].Exporter = func(v interface{}, i int) interface{} {
 			switch v := v.(*SyncChainResponse); i {
 			case 0:
 				return &v.state
@@ -211,9 +621,9 @@ func file_peer2peer_proto_init() {
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: file_peer2peer_proto_rawDesc,
 			NumEnums:      0,
-			NumMessages:   2,
+			NumMessages:   9,
 			NumExtensions: 0,
-			NumServices:   1,
+			NumServices:   2,
 		},
 		GoTypes:           file_peer2peer_proto_goTypes,
 		DependencyIndexes: file_peer2peer_proto_depIdxs,
@@ -232,6 +642,186 @@ var _ grpc.ClientConnInterface
 // This is a compile-time assertion to ensure that this generated file
 // is compatible with the grpc package it is being compiled against.
 const _ = grpc.SupportPackageIsVersion6
+
+// BootNodeServiceClient is the client API for BootNodeService service.
+//
+// For semantics around ctx use and closing/ending streaming RPCs, please refer to https://godoc.org/google.golang.org/grpc#ClientConn.NewStream.
+type BootNodeServiceClient interface {
+	Bootstrap(ctx context.Context, in *BootstrapRequest, opts ...grpc.CallOption) (*BootstrapResponse, error)
+	RetrieveRoutingTable(ctx context.Context, in *RetrieveRoutingTableRequest, opts ...grpc.CallOption) (*RetrieveRoutingTableResponse, error)
+	PropagateNewConnection(ctx context.Context, in *PropagateNewConnectionRequest, opts ...grpc.CallOption) (*PropagateNewConnectionResponse, error)
+	SyncChain(ctx context.Context, in *SyncChainRequest, opts ...grpc.CallOption) (*SyncChainResponse, error)
+}
+
+type bootNodeServiceClient struct {
+	cc grpc.ClientConnInterface
+}
+
+func NewBootNodeServiceClient(cc grpc.ClientConnInterface) BootNodeServiceClient {
+	return &bootNodeServiceClient{cc}
+}
+
+func (c *bootNodeServiceClient) Bootstrap(ctx context.Context, in *BootstrapRequest, opts ...grpc.CallOption) (*BootstrapResponse, error) {
+	out := new(BootstrapResponse)
+	err := c.cc.Invoke(ctx, "/peer2peer.bootNodeService/bootstrap", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *bootNodeServiceClient) RetrieveRoutingTable(ctx context.Context, in *RetrieveRoutingTableRequest, opts ...grpc.CallOption) (*RetrieveRoutingTableResponse, error) {
+	out := new(RetrieveRoutingTableResponse)
+	err := c.cc.Invoke(ctx, "/peer2peer.bootNodeService/retrieveRoutingTable", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *bootNodeServiceClient) PropagateNewConnection(ctx context.Context, in *PropagateNewConnectionRequest, opts ...grpc.CallOption) (*PropagateNewConnectionResponse, error) {
+	out := new(PropagateNewConnectionResponse)
+	err := c.cc.Invoke(ctx, "/peer2peer.bootNodeService/propagateNewConnection", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *bootNodeServiceClient) SyncChain(ctx context.Context, in *SyncChainRequest, opts ...grpc.CallOption) (*SyncChainResponse, error) {
+	out := new(SyncChainResponse)
+	err := c.cc.Invoke(ctx, "/peer2peer.bootNodeService/syncChain", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+// BootNodeServiceServer is the server API for BootNodeService service.
+type BootNodeServiceServer interface {
+	Bootstrap(context.Context, *BootstrapRequest) (*BootstrapResponse, error)
+	RetrieveRoutingTable(context.Context, *RetrieveRoutingTableRequest) (*RetrieveRoutingTableResponse, error)
+	PropagateNewConnection(context.Context, *PropagateNewConnectionRequest) (*PropagateNewConnectionResponse, error)
+	SyncChain(context.Context, *SyncChainRequest) (*SyncChainResponse, error)
+}
+
+// UnimplementedBootNodeServiceServer can be embedded to have forward compatible implementations.
+type UnimplementedBootNodeServiceServer struct {
+}
+
+func (*UnimplementedBootNodeServiceServer) Bootstrap(context.Context, *BootstrapRequest) (*BootstrapResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method Bootstrap not implemented")
+}
+func (*UnimplementedBootNodeServiceServer) RetrieveRoutingTable(context.Context, *RetrieveRoutingTableRequest) (*RetrieveRoutingTableResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method RetrieveRoutingTable not implemented")
+}
+func (*UnimplementedBootNodeServiceServer) PropagateNewConnection(context.Context, *PropagateNewConnectionRequest) (*PropagateNewConnectionResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method PropagateNewConnection not implemented")
+}
+func (*UnimplementedBootNodeServiceServer) SyncChain(context.Context, *SyncChainRequest) (*SyncChainResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method SyncChain not implemented")
+}
+
+func RegisterBootNodeServiceServer(s *grpc.Server, srv BootNodeServiceServer) {
+	s.RegisterService(&_BootNodeService_serviceDesc, srv)
+}
+
+func _BootNodeService_Bootstrap_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(BootstrapRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(BootNodeServiceServer).Bootstrap(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/peer2peer.bootNodeService/Bootstrap",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(BootNodeServiceServer).Bootstrap(ctx, req.(*BootstrapRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _BootNodeService_RetrieveRoutingTable_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(RetrieveRoutingTableRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(BootNodeServiceServer).RetrieveRoutingTable(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/peer2peer.bootNodeService/RetrieveRoutingTable",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(BootNodeServiceServer).RetrieveRoutingTable(ctx, req.(*RetrieveRoutingTableRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _BootNodeService_PropagateNewConnection_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(PropagateNewConnectionRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(BootNodeServiceServer).PropagateNewConnection(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/peer2peer.bootNodeService/PropagateNewConnection",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(BootNodeServiceServer).PropagateNewConnection(ctx, req.(*PropagateNewConnectionRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _BootNodeService_SyncChain_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(SyncChainRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(BootNodeServiceServer).SyncChain(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/peer2peer.bootNodeService/SyncChain",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(BootNodeServiceServer).SyncChain(ctx, req.(*SyncChainRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+var _BootNodeService_serviceDesc = grpc.ServiceDesc{
+	ServiceName: "peer2peer.bootNodeService",
+	HandlerType: (*BootNodeServiceServer)(nil),
+	Methods: []grpc.MethodDesc{
+		{
+			MethodName: "bootstrap",
+			Handler:    _BootNodeService_Bootstrap_Handler,
+		},
+		{
+			MethodName: "retrieveRoutingTable",
+			Handler:    _BootNodeService_RetrieveRoutingTable_Handler,
+		},
+		{
+			MethodName: "propagateNewConnection",
+			Handler:    _BootNodeService_PropagateNewConnection_Handler,
+		},
+		{
+			MethodName: "syncChain",
+			Handler:    _BootNodeService_SyncChain_Handler,
+		},
+	},
+	Streams:  []grpc.StreamDesc{},
+	Metadata: "peer2peer.proto",
+}
 
 // PeerToPeerServiceClient is the client API for PeerToPeerService service.
 //

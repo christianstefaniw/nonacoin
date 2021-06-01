@@ -50,6 +50,3 @@ bootnode2-build:
 
 peer2peerpb:
 	protoc --go_out=plugins=grpc:src/peer2peer --proto_path=$(PROTO_PATH) peer2peer.proto
-
-bootpb:
-	protoc --go_out=plugins=grpc:src/peer2peer --proto_path=$(PROTO_PATH) boot_node.proto

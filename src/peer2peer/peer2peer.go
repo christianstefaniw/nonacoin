@@ -1,23 +1,35 @@
 package peer2peer
 
 import (
+	"context"
+	"fmt"
 	"log"
 	"net"
 	"nonacoin/src/nonacoin"
-	"nonacoin/src/peer2peer/bootnodepb"
 	"nonacoin/src/peer2peer/peer2peerpb"
 
 	"google.golang.org/grpc"
 )
 
 type ConnectedPeersTable map[string]peer2peerpb.PeerToPeerServiceClient
-type ConnectedBootNodePeersTable map[string]bootnodepb.BootNodeServiceClient
 
-type peer2PeerServer struct {
+type RoutingTable map[string]bool
+
+func (r RoutingTable) Add(addr string) bool {
+	r[addr] = true
+	return true
+}
+
+func (r RoutingTable) IsActive(addr string) bool {
+	_, ok := r[addr]
+	return ok
+}
+
+type Peer2PeerServer struct {
 	routingTable RoutingTable
 	peers        ConnectedPeersTable
 	addr         string
-	node         *PeerNode
+	node         Node
 }
 
 func IsBootstrapConn(addr string) bool {
@@ -29,8 +41,8 @@ func IsBootstrapConn(addr string) bool {
 	return false
 }
 
-func newPeer2PeerServer(addr string, node *PeerNode) *peer2PeerServer {
-	return &peer2PeerServer{
+func newPeer2PeerServer(addr string, node Node) *Peer2PeerServer {
+	return &Peer2PeerServer{
 		node:         node,
 		addr:         addr,
 		peers:        newConnectedPeersTable(),
@@ -42,11 +54,29 @@ func newConnectedPeersTable() ConnectedPeersTable {
 	return make(ConnectedPeersTable)
 }
 
-func (s *peer2PeerServer) start() {
-	go s.startListening()
+func emptyRoutingTable() RoutingTable {
+	return make(RoutingTable)
 }
 
-func (s *peer2PeerServer) startListening() {
+func newRoutingTable() RoutingTable {
+	client, err := ConnectToBootNode()
+	if err != nil {
+		log.Fatal(err)
+	}
+	routeTableMap, err := client.RetrieveRoutingTable(context.Background(), &peer2peerpb.RetrieveRoutingTableRequest{})
+	if err != nil {
+		return emptyRoutingTable()
+	}
+	fmt.Println(routeTableMap)
+	rt := RoutingTable(routeTableMap.Table)
+	return rt
+}
+
+func (s *Peer2PeerServer) start() {
+	s.startListening()
+}
+
+func (s *Peer2PeerServer) startListening() {
 	lis, err := net.Listen("tcp", s.addr)
 	if err != nil {
 		log.Fatalf("failed to listen: %v", err)
@@ -54,21 +84,26 @@ func (s *peer2PeerServer) startListening() {
 
 	grpcServer := grpc.NewServer()
 
-	peer2peerpb.RegisterPeerToPeerServiceServer(grpcServer, s.node)
+	switch s.node.WhichNode() {
+	case bootNode:
+		peer2peerpb.RegisterBootNodeServiceServer(grpcServer, s.node.(peer2peerpb.BootNodeServiceServer))
+	case peerNode:
+		peer2peerpb.RegisterPeerToPeerServiceServer(grpcServer, s.node.(peer2peerpb.PeerToPeerServiceServer))
+	}
 
 	if err := grpcServer.Serve(lis); err != nil {
 		log.Fatalf("failed to serve: %v", err)
 	}
 }
 
-func (s *peer2PeerServer) FindPeers() RoutingTable {
+func (s *Peer2PeerServer) FindPeers() RoutingTable {
 	// connect to closest peers
 	// use geographical locations
 	// if location to attempted connection is greater than `x`, do not connect
 	return make(RoutingTable)
 }
 
-func (s *peer2PeerServer) setupClient(addr string) (peer2peerpb.PeerToPeerServiceClient, error) {
+func (s *Peer2PeerServer) setupClient(addr string) (interface{}, error) {
 	conn, err := DialClient(addr)
 	if err != nil {
 		return nil, err
@@ -77,57 +112,4 @@ func (s *peer2PeerServer) setupClient(addr string) (peer2peerpb.PeerToPeerServic
 	s.peers[addr] = peer2peerpb.NewPeerToPeerServiceClient(conn)
 
 	return s.peers[addr], nil
-}
-
-type peer2PeerBootNodeServer struct {
-	routingTable RoutingTable
-	peers        ConnectedBootNodePeersTable
-	addr         string
-	node         *BootNode
-}
-
-func newBootNodeServer(addr string, node *BootNode) *peer2PeerBootNodeServer {
-	return &peer2PeerBootNodeServer{
-		routingTable: newRoutingTable(),
-		peers:        newConnectedBootNodePeersTable(),
-		addr:         addr,
-		node:         node,
-	}
-}
-
-func newConnectedBootNodePeersTable() ConnectedBootNodePeersTable {
-	return make(ConnectedBootNodePeersTable)
-}
-
-func (b *peer2PeerBootNodeServer) start() {
-	b.connectToBootNodes()
-	b.startListening()
-}
-
-func (b *peer2PeerBootNodeServer) startListening() {
-	lis, err := net.Listen("tcp", b.addr)
-	if err != nil {
-		log.Fatalf("failed to listen: %v", err)
-	}
-
-	grpcServer := grpc.NewServer()
-
-	bootnodepb.RegisterBootNodeServiceServer(grpcServer, b.node)
-
-	if err := grpcServer.Serve(lis); err != nil {
-		log.Fatalf("failed to serve: %v", err)
-	}
-}
-
-func (b *peer2PeerBootNodeServer) connectToBootNodes() error {
-	for _, bootAddr := range nonacoin.BOOT_NODES_ADDR {
-		conn, err := DialClient(bootAddr)
-		if err != nil {
-			return err
-		}
-
-		b.peers[bootAddr] = bootnodepb.NewBootNodeServiceClient(conn)
-	}
-
-	return nil
 }
