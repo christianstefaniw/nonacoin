@@ -8,8 +8,11 @@ import (
 	"google.golang.org/grpc"
 )
 
-func DialClient(addr string) (*grpc.ClientConn, error) {
-	return grpc.Dial(addr, grpc.WithInsecure())
+func DialClient(addr string, options ...grpc.DialOption) (*grpc.ClientConn, error) {
+	opts := []grpc.DialOption{grpc.WithInsecure()}
+	opts = append(opts, options...)
+	return grpc.Dial(addr, opts...)
+
 }
 
 func (p *PeerNode) SyncChain(ctx context.Context, request *peer2peerpb.SyncChainRequest) (*peer2peerpb.SyncChainResponse, error) {
@@ -23,7 +26,6 @@ func (p *PeerNode) SyncChain(ctx context.Context, request *peer2peerpb.SyncChain
 }
 
 func (b *BootNode) Bootstrap(ctx context.Context, request *peer2peerpb.BootstrapRequest) (*peer2peerpb.BootstrapResponse, error) {
-
 	rt := b.bootstrap(request.GetAddr())
 
 	response := &peer2peerpb.BootstrapResponse{

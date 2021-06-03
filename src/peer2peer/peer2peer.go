@@ -35,7 +35,7 @@ type Peer2PeerServer struct {
 	node         Node
 }
 
-func IsBootstrapConn(addr string) bool {
+func IsBootConn(addr string) bool {
 	for _, bootAddr := range nonacoin.BOOT_NODES_ADDR {
 		if addr == bootAddr {
 			return true
@@ -46,10 +46,9 @@ func IsBootstrapConn(addr string) bool {
 
 func newPeer2PeerServer(addr string, node Node) *Peer2PeerServer {
 	return &Peer2PeerServer{
-		node:         node,
-		addr:         addr,
-		peers:        newConnectedPeersTable(),
-		routingTable: newRoutingTable(),
+		node:  node,
+		addr:  addr,
+		peers: newConnectedPeersTable(),
 	}
 }
 
@@ -61,15 +60,22 @@ func emptyRoutingTable() RoutingTable {
 	return make(RoutingTable)
 }
 
-func newRoutingTable() RoutingTable {
-	client, err := ConnectToBootNode()
+func LoadRoutingTable(requestNodeAddr string) RoutingTable {
+	client, err := ConnectToBootNode(requestNodeAddr)
+
 	if err != nil {
-		log.Fatal(err)
+		if err.Error() == "no boot nodes" {
+			return emptyRoutingTable()
+		} else {
+			log.Fatal(err)
+		}
 	}
+
 	routeTableMap, err := client.RetrieveRoutingTable(context.Background(), &peer2peerpb.RetrieveRoutingTableRequest{})
 	if err != nil {
 		return emptyRoutingTable()
 	}
+
 	fmt.Println(routeTableMap, "this was loaded from another boot peer")
 	rt := RoutingTable(routeTableMap.Table)
 	return rt
@@ -99,15 +105,9 @@ func (s *Peer2PeerServer) startListening() {
 	}
 }
 
-func (s *Peer2PeerServer) FindPeers() RoutingTable {
-	// connect to closest peers
-	// use geographical locations
-	// if location to attempted connection is greater than `x`, do not connect
-	return make(RoutingTable)
-}
-
-func (s *Peer2PeerServer) setupClient(addr string) (interface{}, error) {
+func (s *Peer2PeerServer) setupPeerClientConn(addr string) (interface{}, error) {
 	conn, err := DialClient(addr)
+	fmt.Println(conn.GetState(), "2")
 	if err != nil {
 		return nil, err
 	}

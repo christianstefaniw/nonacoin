@@ -2,10 +2,16 @@ package peer2peer
 
 import (
 	"context"
+	"errors"
+	"fmt"
 	"math/rand"
+	"nonacoin/src/helpers"
 	"nonacoin/src/nonacoin"
 	"nonacoin/src/peer2peer/peer2peerpb"
 	"time"
+
+	"google.golang.org/grpc"
+	"google.golang.org/grpc/connectivity"
 )
 
 // this is the first node on the network
@@ -26,16 +32,46 @@ func NewBootNode(addr string) *BootNode {
 	return node
 }
 
-func ConnectToBootNode() (peer2peerpb.BootNodeServiceClient, error) {
-	rand.Seed(time.Now().UnixNano())
-	conn, err := DialClient(nonacoin.BOOT_NODES_ADDR[rand.Intn(2)])
-	if err != nil {
-		return nil, err
+func ConnectToBootNode(exclude ...string) (peer2peerpb.BootNodeServiceClient, error) {
+	var index int
+	var currIter int
+	var currBootAddr string
+	var err error
+	var conn *grpc.ClientConn
+
+	uniqueRand := helpers.NewUniqueRand()
+	bounds := len(nonacoin.BOOT_NODES_ADDR)
+
+	for {
+		index = uniqueRand.Int(bounds)
+		currBootAddr = nonacoin.BOOT_NODES_ADDR[index]
+		fmt.Println(currBootAddr)
+		if currIter == bounds-1 {
+			return nil, errors.New("no boot nodes")
+		}
+		if helpers.SearchStringSlice(exclude, currBootAddr) {
+			currIter++
+			continue
+		}
+
+		conn, err = DialClient(currBootAddr, grpc.WithBlock())
+		fmt.Println(conn.GetState())
+
+		if conn.GetState() != connectivity.Ready || err != nil {
+			currIter++
+			continue
+		} else if conn.GetState() == connectivity.Ready {
+			break
+		}
 	}
+
 	return peer2peerpb.NewBootNodeServiceClient(conn), nil
 }
 
 func (b *BootNode) bootstrap(addr string) RoutingTable {
+	rand.Seed(time.Now().UnixNano())
+	newTable := selectRandAddresses(b.routingTable, len(b.routingTable))
+
 	ok := b.routingTable.IsActive(addr)
 	if ok {
 		return b.routingTable
@@ -44,7 +80,18 @@ func (b *BootNode) bootstrap(addr string) RoutingTable {
 	b.routingTable.Add(addr)
 	b.propagateConnection(addr)
 
-	return b.routingTable
+	return newTable
+}
+
+func selectRandAddresses(table RoutingTable, numRoutes int) RoutingTable {
+	var newTable RoutingTable
+	for i := 0; i < numRoutes; i++ {
+		for k := range table {
+			newTable.Add(k)
+			break
+		}
+	}
+	return newTable
 }
 
 func (b *BootNode) propagateConnection(addr string) {
@@ -58,7 +105,7 @@ func (b *BootNode) propagateConnection(addr string) {
 
 // this method will connect boot peers together
 func (b *BootNode) connectToBootNodes() error {
-	for _, bootAddr := range nonacoin.BOOT_NODES_ADDR {
+	for _, bootAddr := range nonacoin.BOOT_NODES_ADDR[1:] {
 		conn, err := DialClient(bootAddr)
 		if err != nil {
 			return err

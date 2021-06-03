@@ -53,6 +53,6 @@ func (p *PeerNode) StartServer() {
 	go p.server.start()
 }
 
-func (p *PeerNode) ConnectToClient(addr string) (interface{}, error) {
-	return p.server.setupClient(addr)
+func (p *PeerNode) ConnectToPeer(addr string) (interface{}, error) {
+	return p.server.setupPeerClientConn(addr)
 }
