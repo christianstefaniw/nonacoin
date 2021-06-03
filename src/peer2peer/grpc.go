@@ -3,9 +3,7 @@ package peer2peer
 import (
 	"context"
 	"fmt"
-	"nonacoin/src/account"
 	"nonacoin/src/peer2peer/peer2peerpb"
-	"nonacoin/src/wallet"
 
 	"google.golang.org/grpc"
 )
@@ -25,19 +23,15 @@ func (p *PeerNode) SyncChain(ctx context.Context, request *peer2peerpb.SyncChain
 }
 
 func (b *BootNode) Bootstrap(ctx context.Context, request *peer2peerpb.BootstrapRequest) (*peer2peerpb.BootstrapResponse, error) {
-	fmt.Println("ok")
-	peerAddr := request.GetAddr()
-	wlt := wallet.NewWallet()
-	acc := account.NewAccount(wlt)
-	newPeer := newPeerNode(peerAddr, acc)
-	b.bootstrap(newPeer)
+
+	rt := b.bootstrap(request.GetAddr())
 
 	response := &peer2peerpb.BootstrapResponse{
-		Success: true,
+		RoutingTable: rt.ToMap(),
 	}
 
-	fmt.Println(b.routingTable)
-	fmt.Println(newPeer.server.routingTable)
+	fmt.Println(b.routingTable, "boot node routing table")
+	fmt.Println(rt, "bootstrapped node routing table")
 
 	return response, nil
 }
@@ -52,11 +46,12 @@ func (b *BootNode) RetrieveRoutingTable(ctx context.Context, request *peer2peerp
 
 func (b *BootNode) PropagateNewConnection(ctx context.Context, request *peer2peerpb.PropagateNewConnectionRequest) (*peer2peerpb.PropagateNewConnectionResponse, error) {
 	b.routingTable.Add(request.Addr)
+
 	response := &peer2peerpb.PropagateNewConnectionResponse{
 		Success: b.routingTable.IsActive(request.Addr),
 	}
 
-	fmt.Println(b.routingTable, "table")
+	fmt.Println(b.routingTable, "this was sent from another node")
 
 	return response, nil
 }

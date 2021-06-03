@@ -15,14 +15,17 @@ type ConnectedPeersTable map[string]peer2peerpb.PeerToPeerServiceClient
 
 type RoutingTable map[string]bool
 
-func (r RoutingTable) Add(addr string) bool {
+func (r RoutingTable) Add(addr string) {
 	r[addr] = true
-	return true
 }
 
 func (r RoutingTable) IsActive(addr string) bool {
 	_, ok := r[addr]
 	return ok
+}
+
+func (r RoutingTable) ToMap() map[string]bool {
+	return map[string]bool(r)
 }
 
 type Peer2PeerServer struct {
@@ -67,7 +70,7 @@ func newRoutingTable() RoutingTable {
 	if err != nil {
 		return emptyRoutingTable()
 	}
-	fmt.Println(routeTableMap)
+	fmt.Println(routeTableMap, "this was loaded from another boot peer")
 	rt := RoutingTable(routeTableMap.Table)
 	return rt
 }

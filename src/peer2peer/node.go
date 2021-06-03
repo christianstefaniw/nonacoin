@@ -5,6 +5,7 @@ import (
 	"nonacoin/src/blockchain"
 	"nonacoin/src/peer2peer/peer2peerpb"
 	"nonacoin/src/transactions"
+	"nonacoin/src/wallet"
 )
 
 type NodeType int
@@ -26,12 +27,18 @@ type PeerNode struct {
 	blockchain      *blockchain.Blockchain
 }
 
-func newPeerNode(addr string, acc *account.Account) *PeerNode {
+func NewPeerNode(addr string) *PeerNode {
+	wlt := wallet.NewWallet()
+	acc := account.NewAccount(wlt)
 	new := new(PeerNode)
 	new.server = newPeer2PeerServer(addr, new)
 	new.transactionPool = transactions.NewPool(transThreshold)
 	new.blockchain = blockchain.NewBlockchain(acc)
 	return new
+}
+
+func (p *PeerNode) SyncRouteTable(table RoutingTable) {
+	p.server.routingTable = table
 }
 
 func (p *PeerNode) GetAddr() string {

@@ -35,16 +35,14 @@ func ConnectToBootNode() (peer2peerpb.BootNodeServiceClient, error) {
 	return peer2peerpb.NewBootNodeServiceClient(conn), nil
 }
 
-func (b *BootNode) bootstrap(p *PeerNode) RoutingTable {
-	p.server.routingTable = b.routingTable
-
-	_, ok := b.routingTable[p.server.addr]
+func (b *BootNode) bootstrap(addr string) RoutingTable {
+	ok := b.routingTable.IsActive(addr)
 	if ok {
 		return b.routingTable
 	}
 
-	b.routingTable[p.server.addr] = true
-	b.propagateConnection(p.server.addr)
+	b.routingTable.Add(addr)
+	b.propagateConnection(addr)
 
 	return b.routingTable
 }
