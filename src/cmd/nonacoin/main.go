@@ -11,7 +11,7 @@ import (
 
 func main() {
 	helpers.LoadDotEnv()
-	const addr = "127.0.0.1:8089"
+	const addr = "127.0.0.1:8086"
 	bootNode, err := peer2peer.ConnectToBootNode()
 	if err != nil {
 		log.Fatal(err)

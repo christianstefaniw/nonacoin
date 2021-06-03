@@ -3,7 +3,6 @@ package peer2peer
 import (
 	"context"
 	"errors"
-	"fmt"
 	"math/rand"
 	"nonacoin/src/helpers"
 	"nonacoin/src/nonacoin"
@@ -40,13 +39,12 @@ func ConnectToBootNode(exclude ...string) (peer2peerpb.BootNodeServiceClient, er
 	var conn *grpc.ClientConn
 
 	uniqueRand := helpers.NewUniqueRand()
-	bounds := len(nonacoin.BOOT_NODES_ADDR)
+	numOfBootNodes := len(nonacoin.BOOT_NODES_ADDR)
 
 	for {
-		index = uniqueRand.Int(bounds)
+		index = uniqueRand.Int(numOfBootNodes)
 		currBootAddr = nonacoin.BOOT_NODES_ADDR[index]
-		fmt.Println(currBootAddr)
-		if currIter == bounds-1 {
+		if currIter == numOfBootNodes-1 {
 			return nil, errors.New("no boot nodes")
 		}
 		if helpers.SearchStringSlice(exclude, currBootAddr) {
@@ -55,14 +53,16 @@ func ConnectToBootNode(exclude ...string) (peer2peerpb.BootNodeServiceClient, er
 		}
 
 		conn, err = DialClient(currBootAddr, grpc.WithBlock())
-		fmt.Println(conn.GetState())
-
-		if conn.GetState() != connectivity.Ready || err != nil {
+		if err != nil {
 			currIter++
 			continue
 		} else if conn.GetState() == connectivity.Ready {
 			break
 		}
+	}
+
+	if conn.GetState() != connectivity.Ready {
+		return nil, err
 	}
 
 	return peer2peerpb.NewBootNodeServiceClient(conn), nil
@@ -76,7 +76,6 @@ func (b *BootNode) bootstrap(addr string) RoutingTable {
 	if ok {
 		return b.routingTable
 	}
-
 	b.routingTable.Add(addr)
 	b.propagateConnection(addr)
 
@@ -84,7 +83,7 @@ func (b *BootNode) bootstrap(addr string) RoutingTable {
 }
 
 func selectRandAddresses(table RoutingTable, numRoutes int) RoutingTable {
-	var newTable RoutingTable
+	newTable := make(RoutingTable)
 	for i := 0; i < numRoutes; i++ {
 		for k := range table {
 			newTable.Add(k)
