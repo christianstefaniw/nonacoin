@@ -2,13 +2,17 @@ package peer2peer
 
 import (
 	"context"
+	"errors"
 	"fmt"
 	"log"
 	"net"
+	"nonacoin/src/helpers"
+	"nonacoin/src/node"
 	"nonacoin/src/nonacoin"
 	"nonacoin/src/peer2peer/peer2peerpb"
 
 	"google.golang.org/grpc"
+	"google.golang.org/grpc/connectivity"
 )
 
 type ConnectedPeersTable map[string]peer2peerpb.PeerToPeerServiceClient
@@ -29,10 +33,10 @@ func (r RoutingTable) ToMap() map[string]bool {
 }
 
 type Peer2PeerServer struct {
-	routingTable RoutingTable
-	peers        ConnectedPeersTable
-	addr         string
-	node         Node
+	RoutingTable RoutingTable
+	Peers        ConnectedPeersTable
+	Addr         string
+	Node         node.Node
 }
 
 func IsBootConn(addr string) bool {
@@ -44,20 +48,57 @@ func IsBootConn(addr string) bool {
 	return false
 }
 
-func newPeer2PeerServer(addr string, node Node) *Peer2PeerServer {
+func NewPeer2PeerServer(addr string, node node.Node) *Peer2PeerServer {
 	return &Peer2PeerServer{
-		node:  node,
-		addr:  addr,
-		peers: newConnectedPeersTable(),
+		Node:  node,
+		Addr:  addr,
+		Peers: NewConnectedPeersTable(),
 	}
 }
 
-func newConnectedPeersTable() ConnectedPeersTable {
+func NewConnectedPeersTable() ConnectedPeersTable {
 	return make(ConnectedPeersTable)
 }
 
-func emptyRoutingTable() RoutingTable {
+func EmptyRoutingTable() RoutingTable {
 	return make(RoutingTable)
+}
+
+func ConnectToBootNode(exclude ...string) (peer2peerpb.BootNodeServiceClient, error) {
+	var index int
+	var currIter int
+	var currBootAddr string
+	var err error
+	var conn *grpc.ClientConn
+
+	uniqueRand := helpers.NewUniqueRand()
+	numOfBootNodes := len(nonacoin.BOOT_NODES_ADDR)
+
+	for {
+		index = uniqueRand.Int(numOfBootNodes)
+		currBootAddr = nonacoin.BOOT_NODES_ADDR[index]
+		if currIter == numOfBootNodes-1 {
+			return nil, errors.New("no boot nodes")
+		}
+		if helpers.SearchStringSlice(exclude, currBootAddr) {
+			currIter++
+			continue
+		}
+
+		conn, err = DialClient(currBootAddr, grpc.WithBlock())
+		if err != nil {
+			currIter++
+			continue
+		} else if conn.GetState() == connectivity.Ready {
+			break
+		}
+	}
+
+	if conn.GetState() != connectivity.Ready {
+		return nil, err
+	}
+
+	return peer2peerpb.NewBootNodeServiceClient(conn), nil
 }
 
 func LoadRoutingTable(requestNodeAddr string) RoutingTable {
@@ -65,7 +106,7 @@ func LoadRoutingTable(requestNodeAddr string) RoutingTable {
 
 	if err != nil {
 		if err.Error() == "no boot nodes" {
-			return emptyRoutingTable()
+			return EmptyRoutingTable()
 		} else {
 			log.Fatal(err)
 		}
@@ -73,7 +114,7 @@ func LoadRoutingTable(requestNodeAddr string) RoutingTable {
 
 	routeTableMap, err := client.RetrieveRoutingTable(context.Background(), &peer2peerpb.RetrieveRoutingTableRequest{})
 	if err != nil {
-		return emptyRoutingTable()
+		return EmptyRoutingTable()
 	}
 
 	fmt.Println(routeTableMap, "this was loaded from another boot peer")
@@ -81,23 +122,23 @@ func LoadRoutingTable(requestNodeAddr string) RoutingTable {
 	return rt
 }
 
-func (s *Peer2PeerServer) start() {
+func (s *Peer2PeerServer) Start() {
 	s.startListening()
 }
 
 func (s *Peer2PeerServer) startListening() {
-	lis, err := net.Listen("tcp", s.addr)
+	lis, err := net.Listen("tcp", s.Addr)
 	if err != nil {
 		log.Fatalf("failed to listen: %v", err)
 	}
 
 	grpcServer := grpc.NewServer()
 
-	switch s.node.WhichNode() {
-	case bootNode:
-		peer2peerpb.RegisterBootNodeServiceServer(grpcServer, s.node.(peer2peerpb.BootNodeServiceServer))
-	case peerNode:
-		peer2peerpb.RegisterPeerToPeerServiceServer(grpcServer, s.node.(peer2peerpb.PeerToPeerServiceServer))
+	switch s.Node.WhichNode() {
+	case node.BootNode:
+		peer2peerpb.RegisterBootNodeServiceServer(grpcServer, s.Node.(peer2peerpb.BootNodeServiceServer))
+	case node.PeerNode:
+		peer2peerpb.RegisterPeerToPeerServiceServer(grpcServer, s.Node.(peer2peerpb.PeerToPeerServiceServer))
 	}
 
 	if err := grpcServer.Serve(lis); err != nil {
@@ -105,14 +146,14 @@ func (s *Peer2PeerServer) startListening() {
 	}
 }
 
-func (s *Peer2PeerServer) setupPeerClientConn(addr string) (interface{}, error) {
+func (s *Peer2PeerServer) SetupPeerClientConn(addr string) (interface{}, error) {
 	conn, err := DialClient(addr)
 	fmt.Println(conn.GetState(), "2")
 	if err != nil {
 		return nil, err
 	}
 
-	s.peers[addr] = peer2peerpb.NewPeerToPeerServiceClient(conn)
+	s.Peers[addr] = peer2peerpb.NewPeerToPeerServiceClient(conn)
 
-	return s.peers[addr], nil
+	return s.Peers[addr], nil
 }

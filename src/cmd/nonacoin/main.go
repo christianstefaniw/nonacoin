@@ -7,6 +7,7 @@ import (
 	"nonacoin/src/helpers"
 	"nonacoin/src/peer2peer"
 	"nonacoin/src/peer2peer/peer2peerpb"
+	peernode "nonacoin/src/peer_node"
 )
 
 func main() {
@@ -16,7 +17,7 @@ func main() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	thisNode := peer2peer.NewPeerNode(addr)
+	thisNode := peernode.NewPeerNode(addr)
 	resp, _ := bootNode.Bootstrap(context.Background(), &peer2peerpb.BootstrapRequest{Addr: thisNode.GetAddr()})
 	thisNode.SyncRouteTable(resp.GetRoutingTable())
 	fmt.Println(resp.RoutingTable)
