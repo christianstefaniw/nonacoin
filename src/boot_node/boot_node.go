@@ -78,11 +78,11 @@ func (b *BootNode) connectToBootNodes() error {
 	return nil
 }
 
-func (n *BootNode) StartServer() {
-	n.Server.Start()
+func (b *BootNode) StartServer() {
+	b.Server.Start()
 }
 
-func (n *BootNode) WhichNode() node.NodeType {
+func (b *BootNode) WhichNode() node.NodeType {
 	return node.BootNode
 }
 
