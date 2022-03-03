@@ -12,7 +12,8 @@
 
 <div align="center">
     <p>A cryptocurrency that will hopefully be used within my community</p>
-    <p> <span style="color: red">I never finished this project </span></p>
+    <p> <span>PROJECT IS INCOMPLETE AND WILL MOST LIKELY NEVER BE COMPLETED</p>
+    <p>I learned a lot though, including how decentralization works</p> 
     
 
 </div>
