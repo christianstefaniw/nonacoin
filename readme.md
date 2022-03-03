@@ -12,7 +12,7 @@
 
 <div align="center">
     <p>A cryptocurrency that will hopefully be used within my community</p>
-    <p style='color: red'>I never finished this project</p>
+    <p style="color:red">I never finished this project</p>
     
 
 </div>
