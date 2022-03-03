@@ -12,7 +12,7 @@
 
 <div align="center">
     <p>PROJECT IS INCOMPLETE AND WILL MOST LIKELY NEVER BE COMPLETED</p>
-    <p>I learned a lot though, including how blockchain actually works (i.e. decentralization using a peer2peer network, hashing, PoS and PoW validation algorithms for validation, etc) </p> 
+    <p>I learned a lot though, including how blockchain actually works (i.e. decentralization using a peer2peer network, hashing, PoS and PoW algorithms for validating transactions, etc) </p> 
     
 
 </div>
